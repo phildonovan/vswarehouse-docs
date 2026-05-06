@@ -4,7 +4,7 @@
 
 **Official Python and R clients for the vs-warehouse statistical data API.**
 
-Access 240+ economic and demographic time series from Stats NZ, the OECD, NZ Treasury, RBNZ, and LINZ — in two lines of code, returning a data frame ready for analysis.
+Access {{ series_count }}+ economic, demographic and geospatial time series from {{ sources }} — in two lines of code, returning a data frame ready for analysis.
 
 <div class="badge-row" markdown>
 

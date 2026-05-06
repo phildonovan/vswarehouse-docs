@@ -44,6 +44,11 @@ markdown_extensions:
   - md_in_html
   - tables
 
+plugins:
+  - search
+  - macros:
+      module_name: macros
+
 extra:
   social:
     - icon: fontawesome/brands/github

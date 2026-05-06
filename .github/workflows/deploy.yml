@@ -3,6 +3,10 @@ name: Deploy docs
 on:
   push:
     branches: [main, master]
+  schedule:
+    # Rebuild weekly so the live series count + source list stay fresh
+    - cron: "0 6 * * 1"   # Mondays 06:00 UTC
+  workflow_dispatch:
 
 permissions:
   contents: write
