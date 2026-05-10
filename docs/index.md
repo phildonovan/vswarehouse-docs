@@ -1,16 +1,16 @@
-# vswarehouse
+# eolas-data
 
 <div class="hero" markdown>
 
-**Official Python and R clients for the vs-warehouse statistical data API.**
+**Official Python, R, and command-line clients for the eolas statistical data API.**
 
-Access {{ series_count }}+ economic, demographic and geospatial datasets from {{ sources }} — in two lines of code, returning a data frame ready for analysis.
+Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {{ sources }} — in two lines of code, returning a data frame ready for analysis. Or schedule cron jobs and generate Meltano / Fivetran / Azure Data Factory connector configs from the command line.
 
 <div class="badge-row" markdown>
 
-[![PyPI](https://img.shields.io/pypi/v/vswarehouse?label=PyPI&color=blue)](https://pypi.org/project/vswarehouse/)
-[![R](https://img.shields.io/badge/R-GitHub-blue)](https://github.com/phildonovan/vswarehouse-r)
-[![API](https://img.shields.io/badge/API-api.virtus--solutions.io-blue)](https://api.virtus-solutions.io)
+[![PyPI](https://img.shields.io/pypi/v/eolas-data?label=PyPI&color=blue)](https://pypi.org/project/eolas-data/)
+[![R](https://img.shields.io/badge/R-GitHub-blue)](https://github.com/phildonovan/eolas-r)
+[![API](https://img.shields.io/badge/API-api.eolas.fyi-blue)](https://api.eolas.fyi)
 
 </div>
 </div>
@@ -22,11 +22,11 @@ Access {{ series_count }}+ economic, demographic and geospatial datasets from {{
 === "Python"
 
     ```bash
-    pip install vswarehouse
+    pip install eolas-data
     ```
 
     ```python
-    from vswarehouse import Client
+    from eolas_data import Client
 
     client = Client("vs_your_key")
 
@@ -41,20 +41,37 @@ Access {{ series_count }}+ economic, demographic and geospatial datasets from {{
 === "R"
 
     ```r
-    remotes::install_github("phildonovan/vswarehouse-r")
+    remotes::install_github("phildonovan/eolas-r")
     ```
 
     ```r
-    library(vswarehouse)
+    library(eolas)
 
-    vs_key("vs_your_key")
+    eolas_key("vs_your_key")
 
     # Source-specific helpers
-    df <- vs_get_statsnz("nz_cpi", start = "2020-01-01")
+    df <- eolas_get_statsnz("nz_cpi", start = "2020-01-01")
 
     # One-line chart
-    vs_plot(df)
+    eolas_plot(df)
     ```
+
+=== "CLI"
+
+    ```bash
+    pip install eolas-data[cli]
+    eolas auth set-key                       # one-time
+    ```
+
+    ```bash
+    # Browse, fetch, schedule, integrate — all from the shell
+    eolas datasets list --search cpi
+    eolas get nz_cpi --start 2020-01-01 --format csv > cpi.csv
+    eolas schedule add nz_cpi --daily --out ~/data/cpi.csv
+    eolas integrate meltano --datasets nz_cpi,nz_gdp    # Enterprise
+    ```
+
+    Same install on Linux, macOS, and Windows. Pipes cleanly into `jq`, `csvkit`, your spreadsheet, etc.
 
 ---
 
@@ -76,12 +93,13 @@ Data is sourced from **Stats NZ**, the **OECD**, **NZ Treasury**, **RBNZ**, and 
 
 ## Get an API key
 
-Free tier (3 requests/day) requires no credit card. [Get your key →](https://api.virtus-solutions.io/signup)
+Free tier requires no credit card. [Get your key →](https://api.eolas.fyi/signup)
 
-| Plan | Price | Requests |
-|---|---|---|
-| Free | $0 | 3/day |
-| Starter | $10/month | 10/day |
-| Pro | $49/month | Unlimited |
+| Plan | Price | Requests | Row cap per request | Extras |
+|---|---|---|---|---|
+| Free | $0 | 10/month | 50,000 | — |
+| Starter | $10/month | 100/month | 50,000 | — |
+| Pro | $49/month | Unlimited | Unlimited | — |
+| Enterprise | Contact us | Unlimited | Unlimited | Snowflake share · `eolas integrate` connector scaffolding (Meltano / Fivetran / Azure Data Factory) |
 
-[View pricing →](https://api.virtus-solutions.io/#pricing)
+[View pricing →](https://eolas.fyi/#pricing)

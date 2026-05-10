@@ -1,8 +1,8 @@
-site_name: vswarehouse
-site_description: Python and R clients for the vs-warehouse statistical data API
-site_url: https://phildonovan.github.io/vswarehouse-docs
-repo_url: https://github.com/phildonovan/vswarehouse-python
-repo_name: vswarehouse-python
+site_name: eolas
+site_description: Python (eolas-data) and R (eolas) clients for the eolas.fyi statistical data API
+site_url: https://docs.eolas.fyi
+repo_url: https://github.com/phildonovan/eolas-data
+repo_name: eolas-data
 
 theme:
   name: material
@@ -29,6 +29,8 @@ nav:
   - R:
     - Overview: r/index.md
     - API reference: r/reference.md
+  - CLI:
+    - Reference: cli/index.md
   - Examples: examples/index.md
 
 markdown_extensions:
@@ -52,9 +54,9 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/phildonovan/vswarehouse-python
+      link: https://github.com/phildonovan/eolas-data
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/vswarehouse/
+      link: https://pypi.org/project/eolas-data/
   analytics:
     feedback:
       title: Was this page helpful?
