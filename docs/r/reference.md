@@ -2,12 +2,12 @@
 
 ## Authentication
 
-### `vs_key(key)`
+### `eolas_key(key)`
 
 Store an API key for the duration of the R session.
 
 ```r
-vs_key("vs_your_key")
+eolas_key("vs_your_key")
 ```
 
 **Arguments**
@@ -17,19 +17,19 @@ vs_key("vs_your_key")
 | `key` | character | A `vs_...` API key |
 
 **Returns:** The key, invisibly.  
-**Note:** If `VS_API_KEY` is set in the environment, you can skip this call entirely.
+**Note:** If `EOLAS_API_KEY` is set in the environment, you can skip this call entirely.
 
 ---
 
 ## Discovery
 
-### `vs_list(source = NULL)`
+### `eolas_list(source = NULL)`
 
 Return metadata for all available series.
 
 ```r
-vs_list()              # all series
-vs_list("Stats NZ")   # Stats NZ only
+eolas_list()              # all series
+eolas_list("Stats NZ")   # Stats NZ only
 ```
 
 **Arguments**
@@ -44,29 +44,31 @@ vs_list("Stats NZ")   # Stats NZ only
 
 ### Source-specific list helpers
 
-Convenience wrappers over `vs_list(source = ...)`.
+Convenience wrappers over `eolas_list(source = ...)`.
 
 | Function | Equivalent |
 |---|---|
-| `vs_list_statsnz()` | `vs_list("Stats NZ")` |
-| `vs_list_oecd()` | `vs_list("OECD")` |
-| `vs_list_rbnz()` | `vs_list("RBNZ")` |
-| `vs_list_treasury()` | `vs_list("NZ Treasury")` |
-| `vs_list_linz()` | `vs_list("LINZ")` |
-| `vs_list_statsnz_geo()` | `vs_list("Stats NZ Geospatial")` |
-| `vs_list_mbie()` | `vs_list("MBIE")` |
-| `vs_list_nzta()` | `vs_list("Waka Kotahi")` |
-| `vs_list_msd()` | `vs_list("MSD")` |
-| `vs_list_police()` | `vs_list("NZ Police / MoJ")` |
+| `eolas_list_statsnz()` | `eolas_list("Stats NZ")` |
+| `eolas_list_oecd()` | `eolas_list("OECD")` |
+| `eolas_list_rbnz()` | `eolas_list("RBNZ")` |
+| `eolas_list_treasury()` | `eolas_list("NZ Treasury")` |
+| `eolas_list_linz()` | `eolas_list("LINZ")` |
+| `eolas_list_statsnz_geo()` | `eolas_list("Stats NZ Geospatial")` |
+| `eolas_list_mbie()` | `eolas_list("MBIE")` |
+| `eolas_list_nzta()` | `eolas_list("Waka Kotahi")` |
+| `eolas_list_msd()` | `eolas_list("MSD")` |
+| `eolas_list_police()` | `eolas_list("NZ Police / MoJ")` |
+| `eolas_list_immigration()` | `eolas_list("Immigration NZ")` |
+| `eolas_list_lris()` | `eolas_list("Manaaki Whenua / LRIS")` |
 
 ---
 
-### `vs_info(name)`
+### `eolas_info(name)`
 
 Return metadata for a single series.
 
 ```r
-meta <- vs_info("nz_cpi")
+meta <- eolas_info("nz_cpi")
 meta$title   # "NZ Consumer Price Index"
 meta$source  # "Stats NZ"
 ```
@@ -84,17 +86,17 @@ meta$source  # "Stats NZ"
 
 ## Fetching data
 
-### `vs_get(name, start = NULL, end = NULL, limit = NULL, as_sf = NULL)`
+### `eolas_get(name, start = NULL, end = NULL, limit = NULL, as_sf = NULL)`
 
 Generic workhorse. For everyday use prefer the source-specific helpers below.
 
 ```r
-df  <- vs_get("nz_cpi", start = "2020-01-01", end = "2024-12-31")
-df  <- vs_get("nz_addresses", limit = 1000)   # first 1000 rows
-df  <- vs_get("nz_cpi")                       # full dataset (Pro tier)
+df  <- eolas_get("nz_cpi", start = "2020-01-01", end = "2024-12-31")
+df  <- eolas_get("nz_addresses", limit = 1000)   # first 1000 rows
+df  <- eolas_get("nz_cpi")                       # full dataset (Pro tier)
 
 # Geospatial: returns an sf object when the sf package is installed
-gdf <- vs_get("nz_addresses", limit = 10)
+gdf <- eolas_get("nz_addresses", limit = 10)
 plot(gdf["full_address"])                     # ready for mapping
 sf::st_transform(gdf, 2193)                   # reproject to NZTM
 ```
@@ -109,43 +111,45 @@ sf::st_transform(gdf, 2193)                   # reproject to NZTM
 | `limit` | integer \| NULL | `NULL` | Max rows. `NULL` requests the full dataset. Free / Starter plans are capped server-side at 50,000 rows; Pro is unlimited. |
 | `as_sf` | logical \| NULL | `NULL` | Return an `sf` object for geospatial datasets. `NULL` auto-converts when geometry is present and the `sf` package is installed. `TRUE` forces conversion (errors if missing). `FALSE` keeps the raw `geometry_wkt` string column. Install with `install.packages("sf")`. |
 
-**Returns:** `vs_series` data frame, or an `sf` object when geometry is present and conversion is enabled.
+**Returns:** `eolas_dataset` data frame, or an `sf` object when geometry is present and conversion is enabled.
 
 ---
 
 ### Source-specific get helpers
 
-Each is a named wrapper over `vs_get()` that tags the result with the source label.
+Each is a named wrapper over `eolas_get()` that tags the result with the source label.
 
 | Function | Source |
 |---|---|
-| `vs_get_statsnz(name, start, end, limit, as_sf)` | Stats NZ |
-| `vs_get_oecd(name, start, end, limit, as_sf)` | OECD |
-| `vs_get_rbnz(name, start, end, limit, as_sf)` | RBNZ |
-| `vs_get_treasury(name, start, end, limit, as_sf)` | NZ Treasury |
-| `vs_get_linz(name, start, end, limit, as_sf)` | LINZ |
-| `vs_get_statsnz_geo(name, start, end, limit, as_sf)` | Stats NZ Geospatial |
-| `vs_get_mbie(name, start, end, limit, as_sf)` | MBIE |
-| `vs_get_nzta(name, start, end, limit, as_sf)` | Waka Kotahi (NZTA) |
-| `vs_get_msd(name, start, end, limit, as_sf)` | MSD |
-| `vs_get_police(name, start, end, limit, as_sf)` | NZ Police / MoJ |
+| `eolas_get_statsnz(name, start, end, limit, as_sf)` | Stats NZ |
+| `eolas_get_oecd(name, start, end, limit, as_sf)` | OECD |
+| `eolas_get_rbnz(name, start, end, limit, as_sf)` | RBNZ |
+| `eolas_get_treasury(name, start, end, limit, as_sf)` | NZ Treasury |
+| `eolas_get_linz(name, start, end, limit, as_sf)` | LINZ |
+| `eolas_get_statsnz_geo(name, start, end, limit, as_sf)` | Stats NZ Geospatial |
+| `eolas_get_mbie(name, start, end, limit, as_sf)` | MBIE |
+| `eolas_get_nzta(name, start, end, limit, as_sf)` | Waka Kotahi (NZTA) |
+| `eolas_get_msd(name, start, end, limit, as_sf)` | MSD |
+| `eolas_get_police(name, start, end, limit, as_sf)` | NZ Police / MoJ |
+| `eolas_get_immigration(name, start, end, limit, as_sf)` | Immigration NZ |
+| `eolas_get_lris(name, start, end, limit, as_sf)` | Manaaki Whenua / LRIS |
 
 ```r
-df <- vs_get_statsnz("nz_cpi", start = "2015-01-01")
-attr(df, "vs_source")   # "Stats NZ"
+df <- eolas_get_statsnz("nz_cpi", start = "2015-01-01")
+attr(df, "eolas_source")   # "Stats NZ"
 ```
 
 ---
 
 ## Plotting
 
-### `vs_plot(x)`
+### `eolas_plot(x)`
 
-Quick ggplot2 line chart for a `vs_series`. Returns a `ggplot` object — add further layers with `+`.
+Quick ggplot2 line chart for a `eolas_dataset`. Returns a `ggplot` object — add further layers with `+`.
 
 ```r
-vs_get_statsnz("nz_cpi", start = "2010-01-01") |>
-  vs_plot() +
+eolas_get_statsnz("nz_cpi", start = "2010-01-01") |>
+  eolas_plot() +
   ggplot2::labs(y = "Index (base 1000)")
 ```
 
@@ -153,7 +157,7 @@ vs_get_statsnz("nz_cpi", start = "2010-01-01") |>
 
 | Name | Type | Description |
 |---|---|---|
-| `x` | vs_series | A data frame returned by any `vs_get_*()` function |
+| `x` | eolas_dataset | A data frame returned by any `eolas_get_*()` function |
 
 **Returns:** `ggplot` object.  
 **Requires:** `ggplot2` — `install.packages("ggplot2")`.
@@ -166,11 +170,11 @@ vs_get_statsnz("nz_cpi", start = "2010-01-01") |>
 
 ```r
 library(dplyr)
-library(vswarehouse)
+library(eolas)
 
-vs_key("vs_your_key")
+eolas_key("vs_your_key")
 
-vs_get_statsnz("nz_cpi", start = "2015-01-01") |>
+eolas_get_statsnz("nz_cpi", start = "2015-01-01") |>
   filter(value > 1050) |>
   arrange(date)
 ```
@@ -180,7 +184,7 @@ vs_get_statsnz("nz_cpi", start = "2015-01-01") |>
 ```r
 library(ggplot2)
 
-df <- vs_get_statsnz("nz_cpi", start = "2010-01-01")
+df <- eolas_get_statsnz("nz_cpi", start = "2010-01-01")
 
 ggplot(df, aes(date, value)) +
   geom_line(colour = "#3b82f6") +
@@ -188,22 +192,22 @@ ggplot(df, aes(date, value)) +
   theme_minimal()
 ```
 
-**With vs_plot (quick):**
+**With eolas_plot (quick):**
 
 ```r
-df <- vs_get_statsnz("nz_cpi", start = "2010-01-01")
-vs_plot(df)
+df <- eolas_get_statsnz("nz_cpi", start = "2010-01-01")
+eolas_plot(df)
 ```
 
 **In R Markdown:**
 
 ````markdown
 ```{r setup, include=FALSE}
-library(vswarehouse)
-vs_key(Sys.getenv("VS_API_KEY"))
+library(eolas)
+eolas_key(Sys.getenv("EOLAS_API_KEY"))
 ```
 
 ```{r cpi-chart, fig.cap="NZ Consumer Price Index"}
-vs_get_statsnz("nz_cpi", start = "2015-01-01") |> vs_plot()
+eolas_get_statsnz("nz_cpi", start = "2015-01-01") |> eolas_plot()
 ```
 ````

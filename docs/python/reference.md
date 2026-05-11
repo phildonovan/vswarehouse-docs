@@ -3,22 +3,22 @@
 ## `Client`
 
 ```python
-class Client(api_key=None, base_url="https://api.virtus-solutions.io", cache=False)
+class Client(api_key=None, base_url="https://api.eolas.fyi", cache=False)
 ```
 
 **Parameters**
 
 | Name | Type | Default | Description |
 |---|---|---|---|
-| `api_key` | `str \| None` | `None` | Your `vs_...` key. Falls back to `VS_API_KEY` env var. |
-| `base_url` | `str` | `"https://api.virtus-solutions.io"` | Override for testing. |
+| `api_key` | `str \| None` | `None` | Your `vs_...` key. Falls back to `EOLAS_API_KEY` env var. |
+| `base_url` | `str` | `"https://api.eolas.fyi"` | Override for testing. |
 | `cache` | `bool` | `False` | Cache responses in memory for the lifetime of the client. |
 
 ---
 
 ### Source-specific methods
 
-All source methods accept the same parameters as `client.get()` and return a `VSeries` tagged with the source label.
+All source methods accept the same parameters as `client.get()` and return a `Dataset` tagged with the source label.
 
 | Method | Source |
 |---|---|
@@ -32,10 +32,12 @@ All source methods accept the same parameters as `client.get()` and return a `VS
 | `client.nzta(name, **kwargs)` | Waka Kotahi (NZTA) |
 | `client.msd(name, **kwargs)` | MSD |
 | `client.police(name, **kwargs)` | NZ Police / MoJ |
+| `client.immigration(name, **kwargs)` | Immigration NZ |
+| `client.lris(name, **kwargs)` | Manaaki Whenua / LRIS |
 
 ```python
 df = client.statsnz("nz_cpi", start="2020-01-01")
-df.vs_source  # "Stats NZ"
+df.eolas_source  # "Stats NZ"
 ```
 
 ---
@@ -105,14 +107,14 @@ gdf.to_crs("EPSG:2193")                           # reproject to NZTM
 | `format` | `str` | `"json"` | `"json"` or `"csv"` |
 | `engine` | `str` | `"pandas"` | `"pandas"` or `"polars"` |
 | `limit` | `int \| None` | `None` | Max rows to return. `None` requests the full dataset. Free / Starter plans are capped server-side at 50,000 rows; Pro is unlimited. |
-| `as_geo` | `bool \| None` | `None` | Return a `geopandas.GeoDataFrame` for geospatial datasets. `None` auto-converts when geometry is present and `geopandas` is importable. `True` forces conversion (errors if missing). `False` keeps the raw `geometry_wkt` string column. Install with `pip install vswarehouse[geo]`. |
+| `as_geo` | `bool \| None` | `None` | Return a `geopandas.GeoDataFrame` for geospatial datasets. `None` auto-converts when geometry is present and `geopandas` is importable. `True` forces conversion (errors if missing). `False` keeps the raw `geometry_wkt` string column. Install with `pip install eolas-data[geo]`. |
 
-**Returns:** `VSeries` (pandas) or `polars.DataFrame` when `engine="polars"`  
+**Returns:** `Dataset` (pandas) or `polars.DataFrame` when `engine="polars"`  
 **Raises:** `NotFoundError`, `AuthenticationError`, `RateLimitError`
 
 ---
 
-## `VSeries`
+## `Dataset`
 
 A `pandas.DataFrame` subclass returned by all data-fetching methods.
 
@@ -120,12 +122,12 @@ A `pandas.DataFrame` subclass returned by all data-fetching methods.
 
 | Attribute | Type | Description |
 |---|---|---|
-| `vs_name` | `str` | Series identifier, e.g. `"nz_cpi"` |
-| `vs_source` | `str` | Source label, e.g. `"Stats NZ"` |
+| `eolas_name` | `str` | Series identifier, e.g. `"nz_cpi"` |
+| `eolas_source` | `str` | Source label, e.g. `"Stats NZ"` |
 
 **Methods**
 
-### `VSeries.plot_series(ax=None, **kwargs)`
+### `Dataset.plot_series(ax=None, **kwargs)`
 
 Quick matplotlib line chart.
 
@@ -142,16 +144,16 @@ ax.set_ylabel("Index")   # customise further
 | `**kwargs` | | | Passed to `ax.plot()`. |
 
 **Returns:** `matplotlib.Axes`  
-**Requires:** `matplotlib` — `pip install matplotlib` or `pip install vswarehouse[plot]`
+**Requires:** `matplotlib` — `pip install matplotlib` or `pip install eolas-data[plot]`
 
 ---
 
 ## Exceptions
 
-All exceptions inherit from `vswarehouse.exceptions.VSWarehouseError`.
+All exceptions inherit from `eolas_data.exceptions.VSWarehouseError`.
 
 ```python
-from vswarehouse.exceptions import (
+from eolas_data.exceptions import (
     VSWarehouseError,      # base
     AuthenticationError,   # 401 / 403
     RateLimitError,        # 429

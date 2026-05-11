@@ -101,6 +101,9 @@ Use source-specific helpers so your code is self-documenting:
     # NZ Treasury
     df = client.treasury("treasury_fiscal_spending")
 
+    # Manaaki Whenua / LRIS (land cover — returns a GeoDataFrame when geopandas is installed)
+    gdf = client.lris("lcdb_v6_mainland")
+
     print(df)
     # Dataset: nz_cpi [Stats NZ]
     # 20 rows
@@ -120,6 +123,9 @@ Use source-specific helpers so your code is self-documenting:
 
     # NZ Treasury
     df <- eolas_get_treasury("treasury_fiscal_spending")
+
+    # Manaaki Whenua / LRIS (land cover — returns an sf object when the sf package is installed)
+    gdf <- eolas_get_lris("lcdb_v6_mainland")
 
     df
     # eolas_dataset: nz_cpi [Stats NZ]
