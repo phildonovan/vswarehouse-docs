@@ -153,7 +153,7 @@ eolas integrate azure-data-factory  --datasets nz_cpi,nz_gdp
 
 | Platform | What you get | Status |
 |---|---|---|
-| Meltano | `meltano.yml` (uses `tap-rest-api-msdk`) + README + `.env.example` — `meltano install && meltano run tap-eolas target-jsonl` and you're loading | **Verified** — see recipe below |
+| Meltano | `meltano.yml` (uses `tap-rest-api-msdk`) + README + `.env.example` — `meltano install && meltano run tap-eolas target-jsonl` and you're loading | **Verified end-to-end** — see recipe below |
 | Fivetran | Connector Builder YAML for paste-into-dashboard import + setup README | **Experimental** — output is structure-verified but hasn't been tested end-to-end against a real Fivetran account |
 | Azure Data Factory | Linked-service + per-dataset REST datasets + copy pipeline JSON — usable via `az datafactory` CLI or ADF Studio paste | **Experimental** — output is structure-verified but hasn't been tested end-to-end against a real Azure subscription |
 
