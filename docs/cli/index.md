@@ -151,11 +151,11 @@ eolas integrate fivetran            --datasets nz_cpi
 eolas integrate azure-data-factory  --datasets nz_cpi,nz_gdp
 ```
 
-| Platform | What you get |
-|---|---|
-| Meltano | `meltano.yml` (uses `tap-rest-api-msdk`) + README + `.env.example` — `meltano install && meltano run tap-eolas target-jsonl` and you're loading |
-| Fivetran | Connector Builder YAML for paste-into-dashboard import + setup README |
-| Azure Data Factory | Linked-service + per-dataset REST datasets + copy pipeline JSON — usable via `az datafactory` CLI or ADF Studio paste |
+| Platform | What you get | Status |
+|---|---|---|
+| Meltano | `meltano.yml` (uses `tap-rest-api-msdk`) + README + `.env.example` — `meltano install && meltano run tap-eolas target-jsonl` and you're loading | **Verified** — see recipe below |
+| Fivetran | Connector Builder YAML for paste-into-dashboard import + setup README | **Experimental** — output is structure-verified but hasn't been tested end-to-end against a real Fivetran account |
+| Azure Data Factory | Linked-service + per-dataset REST datasets + copy pipeline JSON — usable via `az datafactory` CLI or ADF Studio paste | **Experimental** — output is structure-verified but hasn't been tested end-to-end against a real Azure subscription |
 
 Output directory defaults to `./eolas-<platform>/`. Existing files are
 preserved unless you pass `--force`.
@@ -163,6 +163,36 @@ preserved unless you pass `--force`.
 This is an Enterprise-plan feature. Non-Enterprise keys see a clear
 upgrade pointer with the [pricing URL](https://eolas.fyi/#pricing). The
 gating lives server-side so the capability is bypass-proof.
+
+#### Meltano verification recipe
+
+Roughly five minutes, end-to-end:
+
+```bash
+eolas integrate meltano --datasets nz_cpi --output /tmp/eolas-meltano-test
+cd /tmp/eolas-meltano-test
+export EOLAS_API_KEY=your_enterprise_key
+meltano install
+meltano run tap-eolas target-jsonl
+ls output/             # → nz_cpi.jsonl with the CPI series in it
+```
+
+If records land in `output/nz_cpi.jsonl`, the generated `meltano.yml` is provably
+correct — Meltano installed the tap, fetched data through the eolas API, and
+wrote it to disk. This is the path used to mark Meltano "verified".
+
+#### Experimental status
+
+"Experimental" doesn't mean *broken*; it means the output passes a thorough
+set of structural checks (parses as valid YAML / JSON, declares all the
+fields the platform's documented spec requires, internal references between
+resources resolve correctly) but **the generated config has not actually
+been imported into the target platform and run end-to-end**.
+
+If you import the experimental output into Fivetran or ADF and it fails with
+a specific error, [open an issue on eolas-data](https://github.com/phildonovan/eolas-data/issues)
+with the error message. Usually it's a renamed field or a stricter type than
+the generator assumed; fixes ship within hours.
 
 ### Other commands
 
