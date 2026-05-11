@@ -60,6 +60,7 @@ Convenience wrappers over `eolas_list(source = ...)`.
 | `eolas_list_police()` | `eolas_list("NZ Police / MoJ")` |
 | `eolas_list_immigration()` | `eolas_list("Immigration NZ")` |
 | `eolas_list_lris()` | `eolas_list("Manaaki Whenua / LRIS")` |
+| `eolas_list_geonet()` | `eolas_list("GeoNet")` |
 
 ---
 
@@ -133,6 +134,7 @@ Each is a named wrapper over `eolas_get()` that tags the result with the source 
 | `eolas_get_police(name, start, end, limit, as_sf)` | NZ Police / MoJ |
 | `eolas_get_immigration(name, start, end, limit, as_sf)` | Immigration NZ |
 | `eolas_get_lris(name, start, end, limit, as_sf)` | Manaaki Whenua / LRIS |
+| `eolas_get_geonet(name, start, end, limit, as_sf)` | GeoNet |
 
 ```r
 df <- eolas_get_statsnz("nz_cpi", start = "2015-01-01")

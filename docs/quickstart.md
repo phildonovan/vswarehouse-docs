@@ -104,6 +104,9 @@ Use source-specific helpers so your code is self-documenting:
     # Manaaki Whenua / LRIS (land cover — returns a GeoDataFrame when geopandas is installed)
     gdf = client.lris("lcdb_v6_mainland")
 
+    # GeoNet (recent NZ earthquakes — rolling ~100 events, MMI>=3)
+    quakes = client.geonet("geonet_quakes_recent")
+
     print(df)
     # Dataset: nz_cpi [Stats NZ]
     # 20 rows
@@ -126,6 +129,9 @@ Use source-specific helpers so your code is self-documenting:
 
     # Manaaki Whenua / LRIS (land cover — returns an sf object when the sf package is installed)
     gdf <- eolas_get_lris("lcdb_v6_mainland")
+
+    # GeoNet (recent NZ earthquakes — rolling ~100 events, MMI>=3)
+    quakes <- eolas_get_geonet("geonet_quakes_recent")
 
     df
     # eolas_dataset: nz_cpi [Stats NZ]
