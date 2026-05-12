@@ -32,6 +32,7 @@ nav:
   - CLI:
     - Reference: cli/index.md
   - Examples: examples/index.md
+  - Troubleshooting: troubleshooting.md
 
 markdown_extensions:
   - pymdownx.highlight:
