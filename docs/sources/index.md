@@ -10,10 +10,10 @@ This section has a per-source guide for the most-queried agencies — covering w
 |---|---|---|---|
 | [Stats NZ](statsnz.md) | 415 | Weekly Wed AM NZT | Macro indicators, business demography, population, justice, productivity, geospatial boundaries |
 | [RBNZ](rbnz.md) | 33 | Weekly | Interest rates, exchange rates, money supply, mortgages, BoP, financial-stability indicators |
-| [NZ Treasury](#) | 5 | Monthly | Fiscal spending, revenue, debt, NZSF, GDP estimates |
-| [MBIE](#) | 12 | Weekly | Fuel prices, gas stats, rental bonds, GETS tender awards, science funding |
+| [NZ Treasury](treasury.md) | 5 | Monthly | Fiscal spending, revenue, debt, NZSF, GDP estimates |
+| [MBIE](mbie.md) | 12 | Weekly | Fuel prices, gas stats, rental bonds, GETS tender awards, science funding |
 | [Waka Kotahi / NZTA](#) | 5 | Weekly | CAS crashes, driver licences, EV charging, TMS daily traffic, traffic monitoring sites |
-| [Immigration NZ](#) | 16 | Weekly | RDA visa decisions (residence, visitor, work, student), RSE seasonal-worker stats |
+| [Immigration NZ](immigration.md) | 16 | Weekly | RDA visa decisions (residence, visitor, work, student), RSE seasonal-worker stats |
 
 ## International + comparative
 

@@ -30,6 +30,9 @@ nav:
     - OECD: sources/oecd.md
     - RBNZ: sources/rbnz.md
     - LINZ: sources/linz.md
+    - NZ Treasury: sources/treasury.md
+    - MBIE: sources/mbie.md
+    - Immigration NZ: sources/immigration.md
   - Python:
     - Overview: python/index.md
     - API reference: python/reference.md
