@@ -17,6 +17,20 @@ Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {
 
 ---
 
+## What is eolas?
+
+**eolas** is a unified REST API over New Zealand's fragmented official-data landscape, plus reliable Python and R clients on top of it. The same datasets that normally require separate scrapers / API integrations / Excel downloads from Stats NZ, RBNZ, the OECD, LINZ, MBIE, NZTA, ACC, the regional councils, and 20+ other sources are all available behind one consistent endpoint with one API key.
+
+Built so you don't have to:
+
+- Maintain N source-specific scrapers and watch them break when an agency redesigns its website
+- Reconcile dozens of date formats, region codes, and naming conventions
+- Wait for batch CSV exports when you want fresh data
+
+If you do data work in NZ — economic, demographic, geospatial, or social — eolas is the layer that gets the data into your pandas / dplyr / SQL pipeline without you babysitting it.
+
+---
+
 ## Choose your language
 
 === "Python"
@@ -28,14 +42,14 @@ Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {
     ```python
     from eolas_data import Client
 
-    client = Client("vs_your_key")
+    client = Client("your_eolas_key")
 
     # Source-specific helpers
     df = client.statsnz("nz_cpi", start="2020-01-01")
     df = client.oecd("nz_gdp")
 
-    # Or plot it instantly
-    df.plot_series()
+    # It's a pandas DataFrame — plot, filter, join as you like
+    df.plot(x="date", y="value", title="NZ CPI")
     ```
 
 === "R"
@@ -47,13 +61,14 @@ Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {
     ```r
     library(eolas)
 
-    eolas_key("vs_your_key")
+    eolas_key("your_eolas_key")
 
     # Source-specific helpers
     df <- eolas_get_statsnz("nz_cpi", start = "2020-01-01")
 
-    # One-line chart
-    eolas_plot(df)
+    # It's a tibble — plot with ggplot, dplyr-pipe, anything
+    library(ggplot2)
+    ggplot(df, aes(date, value)) + geom_line()
     ```
 
 === "CLI"
@@ -87,7 +102,7 @@ Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {
 | Fiscal | Government spending, revenue, debt, NZ Super Fund |
 | Geospatial | Land parcels, roads, addresses, territorial authorities |
 
-Data is sourced from **Stats NZ**, the **OECD**, **NZ Treasury**, **RBNZ**, and **LINZ**, updated weekly.
+Data is sourced from **Stats NZ**, the **OECD**, **NZ Treasury**, **RBNZ**, **LINZ**, **MBIE**, **Waka Kotahi (NZTA)**, **MSD**, **NZ Police / MoJ**, **ACC**, **Education Counts**, **WorkSafe NZ**, **Auckland Council**, **Auckland Transport**, **DOC**, **Co-Lab Waikato**, **ECan / Canterbury**, **GeoNet**, **Charities Services**, **Immigration NZ**, **EECA**, **Manaaki Whenua / LRIS**, and 10 regional & district council clusters. Updated weekly.
 
 ---
 
@@ -97,9 +112,9 @@ Free tier requires no credit card. [Get your key →](https://api.eolas.fyi/sign
 
 | Plan | Price | Requests | Row cap per request | Extras |
 |---|---|---|---|---|
-| Free | $0 | 10/month | 50,000 | — |
+| Free | $0 | 100/month | 50,000 | — |
 | Starter | $10/month | 100/month | 50,000 | — |
-| Pro | $49/month | Unlimited | Unlimited | — |
-| Enterprise | Contact us | Unlimited | Unlimited | Snowflake share · `eolas integrate` connector scaffolding (Meltano / Fivetran / Azure Data Factory) |
+| Pro | $49/month | Unlimited | Unlimited | Email support |
+| Enterprise | Contact us | Unlimited | Unlimited | Snowflake share · `eolas integrate` connector scaffolding (Meltano / Fivetran / Azure Data Factory) · SLA |
 
 [View pricing →](https://eolas.fyi/#pricing)
