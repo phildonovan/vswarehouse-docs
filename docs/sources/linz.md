@@ -141,7 +141,7 @@ This is the workflow behind property-search tools (PropertyGuru-style sites) —
 ## Source-specific notes
 
 - **SCD2 for cadastral**: parcels, titles, and addresses use SCD2 replication — each refresh adds a new version of any changed rows and marks the old one as expired. The `_eolas_is_current`, `_eolas_valid_from`, and `_eolas_valid_to` columns let you reconstruct the state at any past timestamp. Most users want `WHERE _eolas_is_current = true` to get the current cadastral state.
-- **Size**: `nz_parcels` (~3M) and `nz_addresses` (~3M) exceed the Free/Starter tier's 50,000-row cap. Either upgrade to Pro, filter via geometry (spatial filter on the roadmap), or [download the snapshot](https://eolas.fyi/datasets/nz_parcels/download).
+- **Size**: `nz_parcels` (~3M) and `nz_addresses` (~3M) exceed the Free tier's 50,000-row cap. Either upgrade to Pro, filter via geometry (spatial filter on the roadmap), or [download the snapshot](https://eolas.fyi/datasets/nz_parcels/download).
 - **Koordinates / WFS origin**: most LINZ layers come from the [data.linz.govt.nz](https://data.linz.govt.nz) Koordinates portal via WFS. Some layers (Landonline cadastral working data) come from the LINZ Exports API and are loaded via a different code path.
 - **Earthquake-displaced marks**: the `canterbury_eq_*` datasets capture geodetic marks that moved during the 2010-2011 + 2016 Canterbury quakes — important for surveyors reconciling pre- and post-quake datums.
 - **Antarctic + Ross Dependency**: NZ has Antarctic geodetic responsibility under the Antarctic Treaty; the `antarctic_geodetic_*` datasets are NZ-government data, not third-party.

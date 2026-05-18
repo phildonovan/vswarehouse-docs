@@ -126,7 +126,7 @@ gdf.to_crs("EPSG:2193")                           # reproject to NZTM
 | `end` | `str \| None` | `None` | ISO date upper bound |
 | `format` | `str` | `"json"` | `"json"` or `"csv"`. You don't need to set this for speed — the client transparently negotiates Apache Arrow over the wire for the DataFrame path (see *Performance*). |
 | `engine` | `str` | `"pandas"` | `"pandas"` or `"polars"` |
-| `limit` | `int \| None` | `None` | Max rows to return. `None` requests the full dataset. Free / Starter plans are capped server-side at 50,000 rows; Pro is unlimited. |
+| `limit` | `int \| None` | `None` | Max rows to return. `None` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. |
 | `as_geo` | `bool \| None` | `None` | Return a `geopandas.GeoDataFrame` for geospatial datasets. `None` auto-converts when geometry is present and `geopandas` is importable. `True` forces conversion (errors if missing). `False` keeps the raw `geometry_wkt` string column. Install with `pip install eolas-data[geo]`. |
 
 **Returns:** `Dataset` (pandas) or `polars.DataFrame` when `engine="polars"`  

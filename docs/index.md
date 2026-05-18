@@ -112,8 +112,7 @@ Free tier requires no credit card. [Get your key →](https://api.eolas.fyi/sign
 
 | Plan | Price | Requests | Row cap per request | Extras |
 |---|---|---|---|---|
-| Free | $0 | 100/month | 50,000 | — |
-| Starter | $10/month | 100/month | 50,000 | — |
+| Free | $0 | 10/month | 50,000 | — |
 | Pro | $49/month | Unlimited | Unlimited | Email support |
 | Enterprise | Contact us | Unlimited | Unlimited | Snowflake share · `eolas integrate` connector scaffolding (Meltano / Fivetran / Azure Data Factory) · SLA |
 

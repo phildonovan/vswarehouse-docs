@@ -286,4 +286,4 @@ You can also browse interactively at [eolas.fyi/datasets](https://eolas.fyi/data
 ---
 
 !!! tip "Rate limits"
-    Free keys allow **100 requests per month** at up to 50,000 rows per request. [Pro](https://eolas.fyi/#pricing) ($49/month) is unlimited requests and unlimited rows. Enterprise adds Snowflake share + connector scaffolding + SLA.
+    Free keys allow **10 requests per month** at up to 50,000 rows per request. [Pro](https://eolas.fyi/#pricing) ($49/month) is unlimited requests and unlimited rows. Enterprise adds Snowflake share + connector scaffolding + SLA.

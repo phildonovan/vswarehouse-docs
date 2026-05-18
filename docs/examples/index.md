@@ -153,7 +153,7 @@ Spatial datasets auto-return as `GeoDataFrame` (Python) or `sf` (R) when the opt
     ggplot(wellington) + geom_sf() + theme_void()
     ```
 
-> **Heads up**: Meshblock 2023 has ~57k features. Free / Starter tier row cap is 50,000 — this dataset will truncate. Filter via the API (`start` / `end` only work on time series; for spatial you need a region/bbox filter — not yet in v1.0). For full coverage, use Pro tier or [download the snapshot](https://eolas.fyi/datasets/nz_meshblock_2023/download).
+> **Heads up**: Meshblock 2023 has ~57k features. Free tier row cap is 50,000 — this dataset will truncate. Filter via the API (`start` / `end` only work on time series; for spatial you need a region/bbox filter — not yet in v1.0). For full coverage, use Pro tier or [download the snapshot](https://eolas.fyi/datasets/nz_meshblock_2023/download).
 
 ---
 
@@ -289,7 +289,7 @@ except NotFoundError:
 
 ### Detect row-cap truncation
 
-When you query a large dataset on Free or Starter tier, the response is silently capped at 50,000 rows. Check for it:
+When you query a large dataset on the Free tier, the response is silently capped at 50,000 rows. Check for it:
 
 ```python
 df = client.statsnz("nz_addresses")     # ~3M rows — will be capped

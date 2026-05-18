@@ -144,7 +144,7 @@ plt.title("Pastoral beef + sheep intensity (H3 R9)")
 - **LCDB classes (33 total)**: see the [LCDB documentation](https://lris.scinfo.org.nz/layer/104400-lcdb-v50-deprecated-land-cover-database-version-50-mainland-new-zealand) — top-level categories are Artificial, Bare/Lightly-vegetated, Water, Cropland, Grassland, Scrub, Forest. Each splits into specific classes (e.g. "Indigenous Forest", "Exotic Forest", "Manuka and/or Kanuka").
 - **Cover vs use**: LCDB tells you *what's growing/present*; NZLUM tells you *what it's used for*. Forestry land in LCDB might be "Exotic Forest" cover; in NZLUM it'd be "Forestry — exotic — production". Use the right one for the question you're answering.
 - **PAN includes private protection**: the Protected Areas Network is broader than just DOC's `doc_public_conservation_land`. It includes QEII covenants on private land, ngā whenua rāhui on Māori land, and other formal protections. For "what's protected somewhere" use PAN; for "what does DOC manage" use the DOC layer.
-- **Geometry**: all LRIS datasets expose `geometry_wkt`. The polygon datasets (LCDB, NZLUM, PAN) can be large — `lcdb_v6_mainland` is ~430k polygons. Free / Starter tier 50,000-row cap will truncate; either upgrade or filter with a region clip first.
+- **Geometry**: all LRIS datasets expose `geometry_wkt`. The polygon datasets (LCDB, NZLUM, PAN) can be large — `lcdb_v6_mainland` is ~430k polygons. Free tier 50,000-row cap will truncate; either upgrade or filter with a region clip first.
 - **CRS**: LRIS publishes in NZTM2000 (EPSG:2193). The eolas pipeline reprojects to WGS84 (EPSG:4326) for the wire format. For area / distance calculations, reproject back to NZTM (`.to_crs("EPSG:2193")`).
 
 ---

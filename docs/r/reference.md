@@ -128,10 +128,34 @@ sf::st_transform(gdf, 2193)                   # reproject to NZTM
 | `name` | character | — | Dataset identifier |
 | `start` | character \| NULL | `NULL` | ISO date lower bound, e.g. `"2020-01-01"` |
 | `end` | character \| NULL | `NULL` | ISO date upper bound |
-| `limit` | integer \| NULL | `NULL` | Max rows. `NULL` requests the full dataset. Free / Starter plans are capped server-side at 50,000 rows; Pro is unlimited. |
+| `limit` | integer \| NULL | `NULL` | Max rows. `NULL` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. |
 | `as_sf` | logical \| NULL | `NULL` | Return an `sf` object for geospatial datasets. `NULL` auto-converts when geometry is present and the `sf` package is installed. `TRUE` forces conversion (errors if missing). `FALSE` keeps the raw `geometry_wkt` string column. Install with `install.packages("sf")`. |
 
 **Returns:** `eolas_dataset` data frame, or an `sf` object when geometry is present and conversion is enabled.
+
+#### Performance: Arrow & Parquet
+
+The API serves datasets in four formats via `?format=` — `json` (default), `csv`, `arrow` (Apache Arrow IPC stream), and `parquet`. Arrow and Parquet are columnar and typed, so they're dramatically faster for anything beyond a few hundred rows. Measured end-to-end on a 100,000-row × 71-column dataset:
+
+| Format | Wire size | Total (download + parse) |
+|---|---|---|
+| JSON | 165 MB | 39.5 s |
+| **Arrow** | 66 MB | **7.7 s** (5× faster; ~80× faster parse) |
+| **Parquet** | 6.3 MB | **4.3 s** (9× faster; 26× smaller) |
+
+`eolas_get()` uses Arrow **automatically** when the `arrow` package is installed — `eolas_get("nz_cpi")` returns the same data frame, just much faster on large pulls, with a transparent JSON fallback. `arrow` is a *suggested* dependency, so install it once to switch the transport on (without it you get a one-time hint and JSON transport):
+
+```r
+install.packages("arrow")   # one-off; no code change needed
+```
+
+Hitting the REST API directly for a Parquet file:
+
+```bash
+curl -H "X-API-Key: $EOLAS_API_KEY" \
+  "https://api.eolas.fyi/v1/datasets/nzta_cas_crashes/data?format=parquet&limit=100000" \
+  -o crashes.parquet
+```
 
 ---
 

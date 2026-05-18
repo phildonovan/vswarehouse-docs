@@ -40,7 +40,7 @@ What this means in practice:
 
 - **Free analysis, charts, blog posts**: fine, attribute OECD.
 - **Charging customers for OECD data**: not fine without an OECD agreement.
-- **eolas's stance**: we serve OECD data on Free / Starter / Pro tiers as a convenience for analytical use. **Enterprise customers** are excluded from automated OECD redistribution — if you're building a paid product on top of OECD data, contact us so we can structure the licence appropriately, or query OECD's own API directly.
+- **eolas's stance**: we serve OECD data on the Free and Pro tiers as a convenience for analytical use. **Enterprise customers** are excluded from automated OECD redistribution — if you're building a paid product on top of OECD data, contact us so we can structure the licence appropriately, or query OECD's own API directly.
 
 Recommended attribution: *"Source: OECD, via eolas (eolas.fyi). © OECD."*
 

@@ -13,8 +13,8 @@ The API returns standard HTTP codes. Each maps to a Python exception class (and 
 | **401** | `AuthenticationError` | Missing or wrong API key | Check `EOLAS_API_KEY` env var or `Client(api_key=...)`. Keys start with `vs_`; if yours doesn't, regenerate from [your dashboard](https://eolas.fyi/settings). |
 | **403** | `AuthenticationError` | API key is valid but your plan doesn't include this endpoint (e.g. `/v1/integrations/*` is Enterprise-only) | Check your plan at [eolas.fyi/dashboard](https://eolas.fyi/dashboard). Upgrade if needed, or use a generic endpoint that's available on your plan. |
 | **404** | `NotFoundError` | Dataset name doesn't exist | Double-check the spelling. Run `client.list()` to see all available names, or browse [eolas.fyi/datasets](https://eolas.fyi/datasets). Names are case-sensitive. |
-| **413** | `APIError` (status_code=413) | Row cap exceeded for your plan | Free / Starter cap at 50,000 rows per request. Either narrow the query (date range, region filter) or upgrade to Pro for uncapped queries. The response includes `X-Plan-Row-Cap` and `X-Plan-Rows-Available` headers. |
-| **429** | `RateLimitError` | Monthly request quota reached | Free is 100/month, Starter is 100/month, Pro is unlimited. Wait until next month, upgrade, or contact us if you think the count is wrong. The response includes `X-Plan-Monthly-Limit` and `X-Plan-Requests-Used` headers. |
+| **413** | `APIError` (status_code=413) | Row cap exceeded for your plan | Free caps at 50,000 rows per request. Either narrow the query (date range, region filter) or upgrade to Pro for uncapped queries. The response includes `X-Plan-Row-Cap` and `X-Plan-Rows-Available` headers. |
+| **429** | `RateLimitError` | Monthly request quota reached | Free is 10/month, Pro is unlimited. Wait until next month, upgrade, or contact us if you think the count is wrong. The response includes `X-Plan-Monthly-Limit` and `X-Plan-Requests-Used` headers. |
 | **5xx** | `APIError` | Server issue on our end | Retry once or twice — the client doesn't auto-retry. If it persists, check the [status page](https://eolas.fyi/status) and report via GitHub. |
 
 ---
@@ -80,7 +80,7 @@ eolas_key("vs_...")
 
 ### "I'm getting fewer rows than I expected"
 
-You're probably hitting the **50,000 row cap** on the Free or Starter tier. The response is truncated — no error is raised, but the cap is signalled in the `X-Plan-Row-Cap` and `X-Truncated` HTTP headers.
+You're probably hitting the **50,000 row cap** on the Free tier. The response is truncated — no error is raised, but the cap is signalled in the `X-Plan-Row-Cap` and `X-Truncated` HTTP headers.
 
 Options:
 
@@ -92,7 +92,7 @@ Options:
 # Check whether your result was truncated
 df = client.statsnz("nz_addresses")
 df.eolas_truncated  # True if you hit the cap
-df.eolas_row_cap    # 50000 on Free/Starter, None on Pro/Enterprise
+df.eolas_row_cap    # 50000 on Free, None on Pro/Enterprise
 ```
 
 ### "Geometry isn't returning as `sf` / `GeoDataFrame`"
