@@ -161,19 +161,25 @@ meta$source  # "Stats NZ"
 
 ## Fetching data
 
-### `eolas_get(name, start = NULL, end = NULL, limit = NULL, as_sf = NULL)`
+### `eolas_get(name, start = NULL, end = NULL, limit = NULL, as_sf = NULL, mode = "auto")`
 
-Generic workhorse. For everyday use prefer the source-specific helpers below.
+Generic workhorse. For everyday use prefer the source-specific helpers below — they call `eolas_get()` internally and inherit smart routing.
+
+`eolas_get()` is now a **smart entry point**: in `mode = "auto"` (the default) it inspects the dataset's metadata and automatically routes large or geospatial datasets through the cache+sync path. See [Bulk downloads](../bulk-downloads.md) for the full routing rules.
 
 ```r
-df  <- eolas_get("nz_cpi", start = "2020-01-01", end = "2024-12-31")
-df  <- eolas_get("nz_addresses", limit = 1000)   # first 1000 rows
-df  <- eolas_get("nz_cpi")                       # full dataset (Pro tier)
+# Smart default: nz_parcels auto-routes to cache+sync (~seconds after first call)
+gdf <- eolas_get("nz_parcels")
 
-# Geospatial: returns an sf object when the sf package is installed
-gdf <- eolas_get("nz_addresses", limit = 10)
-plot(gdf["full_address"])                     # ready for mapping
-sf::st_transform(gdf, 2193)                   # reproject to NZTM
+# Small dataset stays on the live path; slice args always force live:
+df  <- eolas_get("nz_cpi", start = "2020-01-01", end = "2024-12-31")
+df  <- eolas_get("nz_addresses", limit = 1000)
+
+# Force live even for large datasets
+gdf <- eolas_get("nz_parcels", mode = "live")
+
+# Force cache+sync explicitly (same as eolas_get_local)
+gdf <- eolas_get("nz_parcels", mode = "cached")
 ```
 
 **Arguments**
@@ -181,12 +187,13 @@ sf::st_transform(gdf, 2193)                   # reproject to NZTM
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `name` | character | — | Dataset identifier |
-| `start` | character \| NULL | `NULL` | ISO date lower bound, e.g. `"2020-01-01"` |
-| `end` | character \| NULL | `NULL` | ISO date upper bound |
-| `limit` | integer \| NULL | `NULL` | Max rows. `NULL` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. |
+| `start` | character \| NULL | `NULL` | ISO date lower bound, e.g. `"2020-01-01"`. Forces live path in `mode = "auto"`. |
+| `end` | character \| NULL | `NULL` | ISO date upper bound. Forces live path in `mode = "auto"`. |
+| `limit` | integer \| NULL | `NULL` | Max rows. `NULL` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. Forces live path in `mode = "auto"`. |
 | `as_sf` | logical \| NULL | `NULL` | Return an `sf` object for geospatial datasets. `NULL` auto-converts when geometry is present and the `sf` package is installed. `TRUE` forces conversion (errors if missing). `FALSE` keeps the raw `geometry_wkt` string column. Install with `install.packages("sf")`. |
+| `mode` | character | `"auto"` | `"auto"` — smart-routes via metadata (see above). `"live"` — always use the live API. `"cached"` — always use cache+sync (equivalent to `eolas_get_local()`). |
 
-**Returns:** `eolas_dataset` data frame, or an `sf` object when geometry is present and conversion is enabled.
+**Returns:** `eolas_dataset` data frame, `sf` object when geometry is present and conversion is enabled, or the return value of `eolas_get_local()` when routed through the cache path.
 
 #### Performance: Arrow & Parquet
 
@@ -365,11 +372,14 @@ repeat {
 
 ### `eolas_get_local(name, cache_dir = "~/.cache/eolas", format = NULL, freshness = "auto", as_sf = TRUE)`
 
-Download (or serve from cache) a whole dataset as a local data frame. This is the recommended path for large or geospatial datasets in an interactive R session or R Markdown notebook.
+Explicit alias for `eolas_get(name, mode = "cached")`. Forces the cache+sync path regardless of dataset size or metadata.
+
+`eolas_get(name)` in `mode = "auto"` (the default) now auto-routes large and geospatial datasets to this same path automatically — so for most use cases you no longer need to call `eolas_get_local()` explicitly. Keep using it when:
+
+- You want to be unambiguous in production scripts.
+- You need to control `cache_dir`, `format`, or `freshness` (those parameters are only available here, not on `eolas_get()`).
 
 On the first call it fetches the bulk file from CDN and writes it to `~/.cache/eolas/`. On subsequent calls a lightweight HEAD request checks whether the file is still current; if so the cached copy is read directly with zero data transfer.
-
-If you have been running `eolas_get("nz_parcels")` on a 3-million-row geospatial dataset and it is taking 15+ minutes, use `eolas_get_local()` instead — it serves a pre-materialised GeoParquet from CDN, not a live Iceberg scan.
 
 ```r
 library(eolas)

@@ -6,11 +6,22 @@ The endpoint is `/v1/bulk/{namespace}/{table}` on `api.eolas.fyi`. It's cached b
 
 ---
 
-## The easy path — `get_local` / `eolas_get_local`
+## The easy path — `client.get()` / `eolas_get()` are now smart
 
-For the typical notebook workflow, `get_local()` is what you want. It wraps `sync_bulk` and the file read into one call and returns a DataFrame directly — you do not need to manage paths or parse the file yourself.
+`client.get()` and `eolas_get()` are now smart entry points: they automatically route large or geospatial datasets through the cache+sync path, with no code change needed. The 15-minute `client.get("nz_parcels")` call is now a seconds-fast cached GeoParquet read.
 
-If you have been running `client.get("nz_parcels")` on a 3-million-row geospatial dataset and it takes 15 minutes, this is why: `client.get()` issues a live Iceberg scan through the row-oriented data endpoint. `get_local()` serves a pre-materialised GeoParquet from CDN — milliseconds for monthly snapshots.
+**How the routing works:**
+
+- If you pass any slice argument (`start=`, `end=`, `limit=`) the live API is always used — a whole-file cache cannot serve a filtered subset.
+- Otherwise the client calls `info(name)` to check the dataset's `bulk_export_class`, `geometry_type`, and `row_count_at_last_refresh`. Datasets that are bulk-eligible AND (geospatial OR >100k rows) are routed through the cache+sync path.
+- Licence-restricted datasets (OECD etc., `bulk_export_class="none"`) always go live regardless of size.
+
+When the client first auto-routes a dataset through the cache path it prints a one-time message explaining what happened:
+
+```
+INFO  eolas_data: auto-routing 'nz_parcels' through cache+sync (large/geo dataset).
+                  Cache lives at ~/.cache/eolas/. Use mode='live' to override.
+```
 
 ### Python
 
@@ -19,12 +30,28 @@ from eolas_data import Client
 
 client = Client("your_api_key")
 
-# First call: downloads ~1 GB GeoParquet from CDN into ~/.cache/eolas/
-# Subsequent calls in any future session: HEAD check (~200 bytes) then local read
-gdf = client.get_local("nz_parcels")   # returns geopandas.GeoDataFrame
+# Smart default: nz_parcels auto-routes to cache+sync — first call downloads
+# from CDN, subsequent calls in any session return in <1 s.
+gdf = client.get("nz_parcels")          # geopandas.GeoDataFrame
+df  = client.get("nz_cpi")             # pd.DataFrame (small → stays live)
 
-# Non-geo dataset
-df = client.get_local("nz_cpi")        # returns pd.DataFrame
+# Source-specific helpers inherit smart routing automatically:
+gdf = client.linz("nz_parcels")        # also auto-routes
+```
+
+**Escape hatches when you need explicit control:**
+
+```python
+# Force the live Iceberg scan regardless of dataset size
+gdf = client.get("nz_parcels", mode="live")
+
+# Force the cache+sync path explicitly (same as get_local)
+gdf = client.get("nz_parcels", mode="cached")
+
+# get_local() is the explicit alias for mode="cached" — useful when you want
+# to be unambiguous in a script or when cache_dir / format matter:
+gdf = client.get_local("nz_parcels")
+gdf = client.get_local("nz_parcels", cache_dir="/data/eolas", freshness="monthly")
 ```
 
 `format` auto-detects from metadata (geo → geoparquet, else parquet). Cached under `~/.cache/eolas/` by default. Exceptions from the bulk endpoint (`BulkLicenceRestricted`, `BulkUpgradeRequired`, `BulkNotYetAvailable`) propagate unchanged.
@@ -35,12 +62,26 @@ df = client.get_local("nz_cpi")        # returns pd.DataFrame
 library(eolas)
 eolas_key("your_key")
 
-# First call: downloads GeoParquet from CDN into ~/.cache/eolas/
-# Subsequent calls: HEAD check then local read
-gdf <- eolas_get_local("nz_parcels")   # returns sf object (if sf installed)
+# Smart default: auto-routes to cache+sync for large/geo datasets
+gdf <- eolas_get("nz_parcels")         # sf object
+df  <- eolas_get("nz_cpi")             # data.frame (small → stays live)
 
-# Non-geo dataset
-df  <- eolas_get_local("nz_cpi")       # returns data.frame
+# Source-specific helpers inherit smart routing:
+gdf <- eolas_get_linz("nz_parcels")   # also auto-routes
+```
+
+**Escape hatches:**
+
+```r
+# Force live
+gdf <- eolas_get("nz_parcels", mode = "live")
+
+# Force cache+sync (same as eolas_get_local)
+gdf <- eolas_get("nz_parcels", mode = "cached")
+
+# eolas_get_local() is the explicit alias — useful when cache_dir / format matter:
+gdf <- eolas_get_local("nz_parcels")
+df  <- eolas_get_local("nz_cpi", cache_dir = "/data/eolas", format = "csv_gz")
 ```
 
 See the [Python reference](python/reference.md) and [R reference](r/reference.md) for the full parameter list.

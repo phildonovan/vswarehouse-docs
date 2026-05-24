@@ -30,22 +30,27 @@ EOLAS_API_KEY=your_eolas_key
 The recommended way to fetch data — the source is encoded in the function name, making code self-documenting and autocomplete-friendly in RStudio:
 
 ```r
-df <- eolas_get_statsnz("nz_cpi", start = "2020-01-01")   # Stats NZ
-df <- eolas_get_oecd("nz_gdp_growth")                            # OECD
-df <- eolas_get_rbnz("rbnz_b2_wholesale_rates_monthly")                               # RBNZ
-df <- eolas_get_treasury("treasury_fiscal_spending")       # NZ Treasury
-df <- eolas_get_linz("nz_parcels", limit = 1000)          # LINZ (~3M rows — always limit/filter big geo)
+df  <- eolas_get_statsnz("nz_cpi", start = "2020-01-01")   # Stats NZ
+df  <- eolas_get_oecd("nz_gdp_growth")                      # OECD
+df  <- eolas_get_rbnz("rbnz_b2_wholesale_rates_monthly")    # RBNZ
+df  <- eolas_get_treasury("treasury_fiscal_spending")       # NZ Treasury
+gdf <- eolas_get_linz("nz_parcels")   # LINZ (~3M rows — auto-bulks in seconds, no limit needed)
 ```
 
-For multi-million-row or geospatial datasets, use `eolas_get_local()` instead — it serves a pre-materialised file from CDN and caches it locally, so subsequent reads take under a second:
+Source-specific helpers call `eolas_get()` internally and inherit smart routing: large and geospatial datasets auto-route through the cache+sync path, so `eolas_get_linz("nz_parcels")` returns an `sf` object in seconds — not 15 minutes. The first call emits a one-line message explaining what happened; subsequent calls are silent.
+
+For cases where you want to be explicit, use `eolas_get_local()` (same path, extra options for `cache_dir` / `format` / `freshness`), or pass `mode = "live"` to force the raw Iceberg scan:
 
 ```r
-# First call downloads from CDN; every subsequent call reads the local cache.
-gdf <- eolas_get_local("nz_parcels")   # sf object (if sf installed)
-df  <- eolas_get_local("nz_cpi")       # data.frame
+# Explicit cache+sync path with extra control
+gdf <- eolas_get_local("nz_parcels")
+df  <- eolas_get_local("nz_cpi", cache_dir = "/data/eolas", format = "csv_gz")
+
+# Force live scan regardless of dataset size
+gdf <- eolas_get("nz_parcels", mode = "live")
 ```
 
-See [Bulk downloads](../bulk-downloads.md) for the full explanation.
+See [Bulk downloads](../bulk-downloads.md) for the full routing rules and tier comparison.
 
 Each returns a `eolas_dataset` tagged with the source label.
 

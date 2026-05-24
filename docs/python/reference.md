@@ -101,20 +101,26 @@ meta = client.info("nz_cpi")
 
 ---
 
-### `client.get(name, start=None, end=None, format="json", engine="pandas", limit=None, as_geo=None)`
+### `client.get(name, start=None, end=None, format="json", engine="pandas", limit=None, as_geo=None, *, mode="auto")`
 
-Fetch dataset rows as a DataFrame. For everyday use prefer the source-specific methods above.
+Fetch dataset rows as a DataFrame. For everyday use prefer the source-specific methods above — they call `get()` internally and inherit smart routing.
+
+`get()` is now a **smart entry point**: in `mode="auto"` (the default) it inspects the dataset's metadata and automatically routes large or geospatial datasets through the cache+sync path, returning a `GeoDataFrame` in seconds instead of minutes. See [Bulk downloads](../bulk-downloads.md) for the full routing rules.
 
 ```python
+# Smart default: nz_parcels auto-routes to cache+sync (~seconds after first call)
+gdf = client.get("nz_parcels")
+
+# Small dataset: stays on the live path (no metadata overhead for sliced queries)
 df = client.get("nz_cpi", start="2020-01-01", end="2024-12-31")
 df = client.get("nz_cpi", engine="polars")        # returns polars DataFrame
-df = client.get("nz_addresses", limit=1000)       # first 1000 rows only
-df = client.get("nz_cpi")                         # full dataset (Pro tier)
+df = client.get("nz_addresses", limit=1000)       # limit= forces live
 
-# Geospatial: returns a geopandas.GeoDataFrame when geopandas is installed
-gdf = client.get("nz_addresses", limit=10)
-gdf.plot()                                        # ready for mapping
-gdf.to_crs("EPSG:2193")                           # reproject to NZTM
+# Force live even for large datasets
+gdf = client.get("nz_parcels", mode="live")
+
+# Force cache+sync explicitly (same as get_local)
+gdf = client.get("nz_parcels", mode="cached")
 ```
 
 **Parameters**
@@ -122,14 +128,15 @@ gdf.to_crs("EPSG:2193")                           # reproject to NZTM
 | Name | Type | Default | Description |
 |---|---|---|---|
 | `name` | `str` | — | Dataset identifier |
-| `start` | `str \| None` | `None` | ISO date lower bound, e.g. `"2020-01-01"` |
-| `end` | `str \| None` | `None` | ISO date upper bound |
+| `start` | `str \| None` | `None` | ISO date lower bound, e.g. `"2020-01-01"`. Forces live path in `mode="auto"`. |
+| `end` | `str \| None` | `None` | ISO date upper bound. Forces live path in `mode="auto"`. |
 | `format` | `str` | `"json"` | `"json"` or `"csv"`. You don't need to set this for speed — the client transparently negotiates Apache Arrow over the wire for the DataFrame path (see *Performance*). |
 | `engine` | `str` | `"pandas"` | `"pandas"` or `"polars"` |
-| `limit` | `int \| None` | `None` | Max rows to return. `None` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. |
+| `limit` | `int \| None` | `None` | Max rows to return. `None` requests the full dataset. Free plan is capped server-side at 50,000 rows; Pro is unlimited. Forces live path in `mode="auto"`. |
 | `as_geo` | `bool \| None` | `None` | Return a `geopandas.GeoDataFrame` for geospatial datasets. `None` auto-converts when geometry is present and `geopandas` is importable. `True` forces conversion (errors if missing). `False` keeps the raw `geometry_wkt` string column. Install with `pip install eolas-data[geo]`. |
+| `mode` | `str` | `"auto"` | `"auto"` — smart-routes via metadata (see above). `"live"` — always use the live API. `"cached"` — always use cache+sync (equivalent to `get_local()`). |
 
-**Returns:** `Dataset` (pandas) or `polars.DataFrame` when `engine="polars"`  
+**Returns:** `Dataset` (pandas), `polars.DataFrame` when `engine="polars"`, or `geopandas.GeoDataFrame` when routed through the cache path  
 **Raises:** `NotFoundError`, `AuthenticationError`, `RateLimitError`
 
 #### Performance: Arrow & Parquet
@@ -265,11 +272,14 @@ print(r.status)            # "updated"
 
 ### `client.get_local(name, *, cache_dir="~/.cache/eolas", format=None, freshness="auto", as_geo=True)`
 
-Download (or serve from cache) a whole dataset as a local DataFrame. This is the recommended path for large or geospatial datasets in a notebook workflow.
+Explicit alias for `client.get(name, mode="cached")`. Forces the cache+sync path regardless of dataset size or metadata.
+
+`client.get(name)` in `mode="auto"` (the default) now auto-routes large and geospatial datasets to this same path automatically — so for most use cases you no longer need to call `get_local()` explicitly. Keep using it when:
+
+- You want to be unambiguous in production scripts.
+- You need to control `cache_dir`, `format`, or `freshness` (those parameters are only available here, not on `get()`).
 
 On the first call it fetches the bulk file from CDN and writes it to `~/.cache/eolas/`. On subsequent calls a lightweight HEAD request checks whether the file is still current; if so the local copy is read directly with zero data transfer.
-
-If you have been running `client.get("nz_parcels")` on a 3-million-row geospatial dataset and it is taking 15+ minutes, use `get_local()` instead — it serves a pre-materialised GeoParquet from CDN, not a live Iceberg scan.
 
 ```python
 from eolas_data import Client

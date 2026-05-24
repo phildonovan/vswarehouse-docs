@@ -37,22 +37,27 @@ client = Client("your_eolas_key", cache=True)
 The recommended way to fetch data — the source is encoded in the method name, making code self-documenting and autocomplete-friendly:
 
 ```python
-df = client.statsnz("nz_cpi", start="2020-01-01")   # Stats NZ
-df = client.oecd("nz_gdp_growth")                           # OECD
-df = client.rbnz("rbnz_b2_wholesale_rates_monthly")                              # RBNZ
-df = client.treasury("treasury_fiscal_spending")      # NZ Treasury
-df = client.linz("nz_parcels", limit=1000)           # LINZ (~3M rows — always limit/filter big geo)
+df  = client.statsnz("nz_cpi", start="2020-01-01")   # Stats NZ
+df  = client.oecd("nz_gdp_growth")                    # OECD
+df  = client.rbnz("rbnz_b2_wholesale_rates_monthly")  # RBNZ
+df  = client.treasury("treasury_fiscal_spending")     # NZ Treasury
+gdf = client.linz("nz_parcels")  # LINZ (~3M rows — auto-bulks in seconds, no limit needed
 ```
 
-For multi-million-row or geospatial datasets, use `get_local()` instead — it serves a pre-materialised file from CDN and caches it locally, so subsequent reads take under a second:
+Source-specific helpers call `client.get()` internally and inherit smart routing: large and geospatial datasets auto-route through the cache+sync path, so `client.linz("nz_parcels")` now returns a GeoDataFrame in seconds — not 15 minutes. The first call emits a one-line log explaining what happened; subsequent calls are silent.
+
+For cases where you want to be explicit, use `get_local()` (same path, extra options for `cache_dir` / `format` / `freshness`), or pass `mode="live"` to force the raw Iceberg scan:
 
 ```python
-# First call downloads from CDN; every subsequent call reads the local cache.
-gdf = client.get_local("nz_parcels")   # geopandas.GeoDataFrame (if geopandas installed)
-df  = client.get_local("nz_cpi")       # pd.DataFrame
+# Explicit cache+sync path with extra control
+gdf = client.get_local("nz_parcels")
+gdf = client.get_local("nz_parcels", cache_dir="/data/eolas", freshness="monthly")
+
+# Force live scan regardless of dataset size
+gdf = client.get("nz_parcels", mode="live")
 ```
 
-See [Bulk downloads](../bulk-downloads.md) for the full explanation.
+See [Bulk downloads](../bulk-downloads.md) for the full routing rules and tier comparison.
 
 Each returns a `Dataset` tagged with the source label.
 
