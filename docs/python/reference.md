@@ -297,6 +297,57 @@ ax.set_ylabel("Index")   # customise further
 
 ---
 
+## CLI auth commands
+
+Manages the API key from the terminal. Requires `pip install 'eolas-data[cli]'`. For the OS-keyring commands, also install the `secure` extra:
+
+```bash
+pip install 'eolas-data[secure]'
+```
+
+### `eolas auth save-key [KEY]`
+
+Save the API key to the OS keyring (macOS Keychain, Windows Credential Manager, Linux Secret Service). Requires `pip install 'eolas-data[secure]'`.
+
+```bash
+eolas auth save-key                # interactive masked prompt
+eolas auth save-key vs_mykey       # non-interactive (e.g. piped from a script)
+```
+
+Stored under `service="eolas"`, `username="api-key"` — the same slot the R client uses, so a key saved from Python is immediately visible in R.
+
+### `eolas auth clear-key`
+
+Remove the API key from the OS keyring. Does not affect `EOLAS_API_KEY` or the config file.
+
+```bash
+eolas auth clear-key
+```
+
+### `eolas auth status`
+
+Show the resolved API key (masked to first 8 characters) and which source supplied it. Checks all sources in precedence order: env var → OS keyring → config file.
+
+```bash
+eolas auth status
+# key:    vs_abcde1…
+# source: OS keyring (service='eolas')
+```
+
+### `eolas auth set-key`
+
+Save the API key to `~/.eolas/config.json` (chmod 600) as a plaintext fallback. No extra install required.
+
+```bash
+eolas auth set-key
+```
+
+### `eolas auth clear`
+
+Remove `~/.eolas/config.json`. Does not affect the env var or keyring.
+
+---
+
 ## Exceptions
 
 All exceptions inherit from `eolas_data.exceptions.EolasError`.

@@ -17,7 +17,62 @@ eolas_key("vs_your_key")
 | `key` | character | A `vs_...` API key |
 
 **Returns:** The key, invisibly.  
-**Note:** If `EOLAS_API_KEY` is set in the environment, you can skip this call entirely.
+**Note:** If `EOLAS_API_KEY` is set in the environment, or the key has been saved via `eolas_key_save()`, you can skip this call entirely.
+
+---
+
+### `eolas_key_save(key = NULL)`
+
+Save the API key to the OS keyring (macOS Keychain, Windows Credential Manager, Linux Secret Service). Once saved, all `eolas_get_*()` calls find the key automatically in every future R session.
+
+The keyring slot (`service = "eolas"`, `username = "api-key"`) is shared with the Python `eolas-data` client, so a key saved from R is immediately visible in Python and vice versa.
+
+Requires the `keyring` package. On Linux, `libsecret-1-dev` system headers must be installed before `install.packages("keyring")`.
+
+```r
+install.packages("keyring")   # one-off install
+
+eolas_key_save()              # interactive masked prompt
+eolas_key_save("vs_...")      # non-interactive
+
+# After saving, no explicit key call needed:
+library(eolas)
+df <- eolas_get("nz_cpi")    # key read from OS keyring automatically
+```
+
+**Arguments**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `key` | character \| NULL | `NULL` | The API key to save. `NULL` triggers an interactive prompt. |
+
+**Returns:** Invisibly `NULL`.
+
+---
+
+### `eolas_key_clear()`
+
+Remove the eolas API key from the OS keyring. Does not affect the `EOLAS_API_KEY` environment variable or any in-session key set by `eolas_key()`.
+
+```r
+eolas_key_clear()
+```
+
+**Returns:** Invisibly `NULL`.
+
+---
+
+### `eolas_key_status()`
+
+Show which source is supplying the eolas API key (in-session, env var, OS keyring, or none) and print the key masked to the first eight characters.
+
+```r
+eolas_key_status()
+# key:    vs_abcdef…
+# source: OS keyring (service = "eolas")
+```
+
+**Returns:** Character string describing the source, invisibly (`"session"`, `"env"`, `"keyring"`, or `"none"`). Called primarily for its printed output.
 
 ---
 

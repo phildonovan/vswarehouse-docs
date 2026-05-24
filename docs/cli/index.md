@@ -45,16 +45,24 @@ eolas integrate meltano --datasets nz_cpi,nz_gdp_growth --output ./my-pipeline/
 
 1. `--api-key VALUE` flag on the command
 2. `EOLAS_API_KEY` environment variable
-3. `VS_API_KEY` environment variable (legacy, still honoured)
+3. OS keyring (`pip install 'eolas-data[secure]'` required; service `"eolas"`, username `"api-key"`)
 4. `~/.eolas/config.json` (written by `eolas auth set-key`, mode 0600)
 
-Useful interactively *and* in CI: set the env var in scripts, use the
-config file on personal machines so cron jobs Just Work.
+For workstations, the OS keyring is the most convenient: one-shot setup, encrypted at rest, no environment variable to manage. For CI and Docker, use the env var — the keyring backend is not available in headless environments.
 
 ```bash
-eolas auth set-key       # prompt for the key, write config
-eolas auth status        # show which source is in use
-eolas auth clear         # delete the config file
+# OS keyring (recommended for workstations)
+pip install 'eolas-data[secure]'
+eolas auth save-key              # interactive prompt
+eolas auth save-key vs_mykey     # non-interactive (e.g. from a script)
+eolas auth clear-key             # remove from keyring
+
+# Config file (plaintext fallback)
+eolas auth set-key               # prompt for the key, write config
+eolas auth clear                 # delete the config file
+
+# Always available
+eolas auth status                # show which source is in use (env / keyring / config)
 ```
 
 ---
@@ -184,10 +192,20 @@ eolas datasets preview nz_cpi --limit 5                # first N rows
 ### `eolas auth ...`
 
 ```bash
-eolas auth set-key       # interactive prompt; writes ~/.eolas/config.json
-eolas auth status        # masked key + source
-eolas auth clear         # remove config file
+# OS keyring — one-shot workstation setup (pip install 'eolas-data[secure]')
+eolas auth save-key              # interactive prompt; saves to OS keyring
+eolas auth save-key vs_mykey     # non-interactive (e.g. from a setup script)
+eolas auth clear-key             # remove key from OS keyring
+
+# Config file — plaintext fallback (no extra install needed)
+eolas auth set-key               # interactive prompt; writes ~/.eolas/config.json
+eolas auth clear                 # remove config file
+
+# Status — works regardless of which source is active
+eolas auth status                # masked key + which source is supplying it
 ```
+
+`eolas auth status` checks all sources in precedence order and reports the first one it finds — useful for debugging auth issues in any environment.
 
 ### `eolas schedule ...`
 

@@ -20,7 +20,8 @@ In precedence order — whichever the client finds first, wins:
 |---|---|---|
 | **1. Explicit argument** | Quick scripts, notebooks where the key is a placeholder you'll fill in | `Client(api_key="vs_...")` (Python) / `eolas_key("vs_...")` (R) |
 | **2. `EOLAS_API_KEY` environment variable** | Production code, CI, anything you don't want hard-coded | `export EOLAS_API_KEY=vs_...` (or set in `.env` / `.Renviron`) |
-| **3. Config file (CLI only)** | One-time setup on your workstation; the CLI manages it for you | `eolas auth set-key` and it'll write to `~/.config/eolas/config.json` |
+| **3. OS keyring (workstation)** | Persistent, encrypted-at-rest — one-shot setup, never paste your key again | `eolas auth save-key` (Python CLI) / `eolas_key_save()` (R) |
+| **4. Config file (CLI only)** | Plaintext fallback when OS keyring is unavailable | `eolas auth set-key` and it'll write to `~/.config/eolas/config.json` |
 
 Below, more on each.
 
@@ -109,9 +110,57 @@ client.info("nz_cpi")  # any successful call confirms auth
 
 ---
 
-## Method 3 — Config file (CLI)
+## Method 3 — OS keyring (workstation)
 
-The CLI has a one-shot setup that writes the key to `~/.config/eolas/config.json` (macOS / Linux) or `%APPDATA%\eolas\config.json` (Windows):
+The most convenient workstation option: stores the key in the OS-native encrypted credential vault (macOS Keychain, Windows Credential Manager, Linux Secret Service). Set once and every Python and R session finds it automatically — no environment variable, no config file.
+
+The Python CLI and R package share the same keyring slot (`service="eolas"`, `username="api-key"`), so saving from one language makes it available in the other.
+
+=== "Python CLI"
+
+    ```bash
+    pip install 'eolas-data[secure]'   # adds the keyring package
+    eolas auth save-key                # interactive prompt
+    eolas auth save-key vs_mykey       # non-interactive (e.g. from a script)
+
+    eolas auth status                  # shows which source is supplying the key
+    eolas auth clear-key               # remove from keyring
+    ```
+
+    After `save-key`, `Client()` works without any further setup in new sessions:
+
+    ```python
+    from eolas_data import Client
+    client = Client()  # finds key from OS keyring automatically
+    ```
+
+=== "R"
+
+    ```r
+    install.packages("keyring")   # or: pak::pak("keyring")
+    # On Linux, you may need: sudo apt install libsecret-1-dev first
+
+    eolas_key_save()        # interactive prompt (masked input)
+    eolas_key_save("vs_...") # non-interactive
+
+    eolas_key_status()      # show which source is supplying the key
+    eolas_key_clear()       # remove from keyring
+    ```
+
+    After `eolas_key_save()`, `eolas_get_*()` works without any further setup:
+
+    ```r
+    library(eolas)
+    df <- eolas_get("nz_cpi")  # key found from OS keyring automatically
+    ```
+
+**Headless / CI environments:** the keyring backend is typically unavailable in Docker containers, GitHub Actions, and cron jobs. The clients fall through to the env var silently — Method 2 is the right choice for those environments.
+
+---
+
+## Method 4 — Config file (CLI)
+
+The CLI has a one-shot setup that writes the key to `~/.eolas/config.json` as plaintext (chmod 600). Use this as a fallback when the OS keyring is unavailable.
 
 ```bash
 pip install eolas-data[cli]
@@ -122,7 +171,7 @@ eolas auth status   # confirm — masks the key for safety
 eolas datasets list # any successful call confirms auth
 ```
 
-The Python `Client` and R `eolas_*` functions **don't** read this config file — it's CLI-only. Use Method 2 (env var) if you want one credential shared across Python, R, and the CLI on the same machine.
+The Python `Client` and R `eolas_*` functions **don't** read this config file — it's CLI-only. Use Method 2 (env var) or Method 3 (OS keyring) if you want one credential shared across Python, R, and the CLI on the same machine.
 
 ---
 
