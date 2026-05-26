@@ -160,6 +160,137 @@ curl -H "X-API-Key: $EOLAS_API_KEY" \
 
 ---
 
+### `client.sync(name, library_dir)`
+
+Incrementally sync a dataset into a local library directory. On the first call, downloads the full snapshot. On subsequent calls, fetches only the rows appended since the last sync and adds them as a delta file. Returns immediately (no download) when the server snapshot is unchanged.
+
+The dataset is stored as a directory of Parquet files plus `_eolas-manifest.json`. Any Parquet-aware tool (`pandas`, `DuckDB`, `polars`, `Spark`, `dbt`) can read the whole directory as one logical table.
+
+See the [Sync guide](../sync-guide.md) for the full conceptual walkthrough, cron and Airflow recipes, and a comparison vs Fivetran/Stitch.
+
+```python
+from eolas_data import Client
+
+client = Client("your_eolas_key")
+LIBRARY = "/data/nz-warehouse"
+
+# First sync — full download
+result = client.sync("nz_parcels", library_dir=LIBRARY)
+print(result.status)           # "snapshot_full"
+print(result.bytes_downloaded) # e.g. 1_650_000_000
+
+# Re-sync — only delta rows
+result = client.sync("nz_parcels", library_dir=LIBRARY)
+print(result.status)   # "unchanged" or "snapshot_delta"
+print(result.rows_added)  # 0 or e.g. 2847
+```
+
+**Parameters**
+
+| Name | Type | Description |
+|---|---|---|
+| `name` | `str` | Dataset identifier, e.g. `"nz_parcels"` |
+| `library_dir` | `str \| Path` | Root directory of your local dataset library. The dataset is written to `<library_dir>/<name>/`. |
+
+**Returns:** `SyncResult` (see below)
+
+---
+
+### `client.sync_all(library_dir, datasets=None)`
+
+Sync multiple datasets concurrently. When `datasets` is not provided, syncs every dataset already registered in the library (by manifest). Up to 4 datasets are synced in parallel.
+
+```python
+# Explicit list
+results = client.sync_all(
+    library_dir="/data/nz-warehouse",
+    datasets=["nz_parcels", "nz_addresses", "nz_property_titles"],
+)
+for name, r in results.items():
+    print(f"{name}: {r.status} (+{r.rows_added} rows)")
+
+# Everything in the library
+results = client.sync_all(library_dir="/data/nz-warehouse")
+```
+
+**Parameters**
+
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `library_dir` | `str \| Path` | — | Root library directory |
+| `datasets` | `list[str] \| None` | `None` | Datasets to sync. `None` syncs all datasets with existing manifests in the library. |
+
+**Returns:** `dict[str, SyncResult]`
+
+---
+
+### `client.compact(path)`
+
+Merge all snapshot and delta files in a dataset directory into a single new snapshot file, then remove the old files. The manifest is updated atomically. Safe to run at any time — old files are only removed after the new snapshot is confirmed.
+
+Pass a single dataset directory or the library root (compacts all datasets with deltas).
+
+```python
+# Single dataset
+client.compact("/data/nz-warehouse/nz_parcels")
+
+# Entire library
+client.compact("/data/nz-warehouse")
+```
+
+**Parameters**
+
+| Name | Type | Description |
+|---|---|---|
+| `path` | `str \| Path` | Path to a dataset directory OR the library root. |
+
+**Returns:** `CompactResult`
+
+| Field | Type | Description |
+|---|---|---|
+| `files_removed` | `int` | Number of old snapshot/delta files deleted |
+| `bytes_saved` | `int` | Approximate disk space recovered |
+| `new_snapshot_file` | `str` | Filename of the new consolidated snapshot |
+
+---
+
+### `SyncResult`
+
+Returned by `client.sync()`. Also available as `eolas_data.SyncResult`.
+
+| Field | Type | Description |
+|---|---|---|
+| `status` | `str` | `"unchanged"` — no data transferred. `"snapshot_full"` — full dataset downloaded (first sync, or full reset after lineage gap). `"snapshot_delta"` — delta rows appended. |
+| `bytes_downloaded` | `int` | Bytes written to disk (`0` when `status="unchanged"`) |
+| `rows_added` | `int` | Rows written in this sync (`0` when unchanged) |
+| `files_added` | `int` | New Parquet files created (`0` when unchanged) |
+| `current_snapshot_id` | `str` | The snapshot ID now recorded in the manifest |
+| `dataset` | `str` | Dataset name |
+
+---
+
+### `client.get()` — library-aware smart routing
+
+When `library_dir` is configured (via `eolas library set` or the `EOLAS_LIBRARY` env var) and a manifest exists for the requested dataset, `client.get()` and the source-specific helpers (`client.linz()`, etc.) automatically read from the local library files using PyArrow's `ParquetDataset` — zero network traffic, no cadence re-check if the manifest is within the dataset's refresh window.
+
+```python
+# After syncing nz_parcels into /data/nz-warehouse:
+client = Client("your_key")  # EOLAS_LIBRARY=/data/nz-warehouse or eolas library set
+
+gdf = client.linz("nz_parcels")   # reads from /data/nz-warehouse/nz_parcels/ — no download
+df  = client.get("nz_cpi")        # small dataset, still goes live (no manifest)
+```
+
+Set the library directory once:
+
+```bash
+eolas library set /data/nz-warehouse
+```
+
+Or per-process via env var: `EOLAS_LIBRARY=/data/nz-warehouse python my_pipeline.py`.
+
+---
+
 ### `client.download_bulk(name, *, freshness="auto", format="parquet", path=None, progress=None)`
 
 Download a complete dataset as a single binary file via the `/v1/bulk/{namespace}/{table}` endpoint. Monthly snapshots are served from Cloudflare's edge cache; Pro current snapshots are lazy-generated on first request.

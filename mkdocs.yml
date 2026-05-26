@@ -23,6 +23,7 @@ theme:
 nav:
   - Home: index.md
   - Getting started: quickstart.md
+  - Sync guide: sync-guide.md
   - Authentication: authentication.md
   - Data sources:
     - Overview: sources/index.md

@@ -106,6 +106,36 @@ For multi-country comparisons (NZ vs Australia vs US), you currently need to que
 
 ---
 
+## Pipeline use
+
+OECD datasets are **full-refresh** on sync — the upstream SDMX source replaces the whole table on each revision, so eolas cannot emit incremental delta rows. A weekly re-download of the five KEI datasets is tiny (each is typically under 500 KB); the sync call returns "unchanged" in most weeks.
+
+Note: OECD data may not be used for commercial redistribution without an OECD agreement (see [License](#license) above). Use `eolas sync` for analytical pipelines; do not feed OECD data into a paid product without checking your licence position.
+
+=== "Python"
+
+    ```python
+    result = client.sync("nz_gdp_growth", library_dir="/data/nz-warehouse")
+    print(result.status)  # "snapshot_full" (first run) or "unchanged"
+    ```
+
+=== "R"
+
+    ```r
+    result <- eolas_sync("nz_gdp_growth", library_dir = "/data/nz-warehouse")
+    result$status  # "snapshot_full" or "unchanged"
+    ```
+
+=== "CLI"
+
+    ```bash
+    eolas sync nz_gdp_growth --library /data/nz-warehouse
+    ```
+
+See the [Sync guide](../sync-guide.md) for full pipeline recipes.
+
+---
+
 ## Source-specific notes
 
 - **Vintage / revision**: OECD revises its data with new vintages — what was Q1 2024 CPI yesterday may be slightly different tomorrow as Stats NZ submits revised inputs. We pull the latest revision each refresh; if you need a frozen-in-time snapshot, archive your local copy.

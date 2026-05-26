@@ -179,6 +179,78 @@ eolas sync nz_cpi --watch 30m    --freshness current
 
 ---
 
+### `eolas sync --library <dir> [<name>]`
+
+Pipeline-mode sync: maintain a local dataset library where each dataset is a directory of Parquet files, updated incrementally. This is distinct from the single-file `eolas sync <name>` (no `--library`) which syncs a single bulk file.
+
+See the [Sync guide](../sync-guide.md) for the full walkthrough, cron recipes, Airflow integration, and the comparison vs Fivetran/Stitch.
+
+```bash
+# First sync — full download; creates /data/nz-warehouse/nz_parcels/ + manifest
+eolas sync nz_parcels --library /data/nz-warehouse
+
+# Re-sync — only delta rows (or "unchanged" if snapshot is current)
+eolas sync nz_parcels --library /data/nz-warehouse
+
+# Multiple named datasets
+eolas sync --library /data/nz-warehouse --datasets nz_parcels nz_addresses nz_property_titles
+
+# Everything previously synced into this library
+eolas sync --library /data/nz-warehouse --all
+
+# Read the result with any Parquet tool
+duckdb -c "SELECT count(*) FROM read_parquet('/data/nz-warehouse/nz_parcels/*.parquet')"
+```
+
+**Options**
+
+| Flag | Values | Default | Description |
+|---|---|---|---|
+| `--library`, `-l` | PATH | (required) | Root library directory |
+| `--datasets` | NAME [NAME…] | (none) | Explicit list of dataset names to sync |
+| `--all` | flag | off | Sync all datasets with existing manifests in the library |
+| `--api-key` | KEY | resolved from env / config | Override API key |
+
+**Exit codes**
+
+| Code | Meaning |
+|---|---|
+| `0` | All syncs succeeded (including "unchanged") |
+| `2` | Auth error or plan restriction |
+| `4` | One or more datasets not found |
+| `5` | API error |
+| `64` | Bad usage (missing required flag) |
+
+On success, each dataset prints one line: `nz_parcels: unchanged (snapshot 5503437…)` or `nz_parcels: delta +2847 rows (1.4 MB)`.
+
+---
+
+### `eolas compact`
+
+Merge all snapshot and delta files in a dataset directory into a single new snapshot file, then remove the old files. Run periodically to keep each dataset directory clean.
+
+```bash
+# Single dataset directory
+eolas compact --dataset nz_parcels --library /data/nz-warehouse
+
+# Entire library — compacts every dataset that has delta files
+eolas compact --library /data/nz-warehouse
+```
+
+**Options**
+
+| Flag | Values | Default | Description |
+|---|---|---|---|
+| `--library`, `-l` | PATH | (required) | Root library directory |
+| `--dataset` | NAME | (none) | Compact one specific dataset. Omit to compact all datasets in the library with delta files. |
+| `--api-key` | KEY | resolved from env / config | Override API key |
+
+**Exit codes:** `0` success, `4` dataset not found, `5` I/O error.
+
+On success, prints: `nz_parcels: compacted 18 files → snapshot-2026-06-01.parquet (1.6 GB, saved 42 MB)`.
+
+---
+
 ### `eolas datasets ...`
 
 ```bash

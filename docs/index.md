@@ -15,6 +15,9 @@ Access {{ dataset_count }}+ economic, demographic and geospatial datasets from {
 </div>
 </div>
 
+!!! tip "NEW: eolas sync"
+    `eolas sync` keeps your NZ data warehouse fresh in one command — incremental fetches, no re-downloads when nothing changed, works with any Parquet tool. [Sync guide](sync-guide.md)
+
 ---
 
 ## What is eolas?

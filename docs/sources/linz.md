@@ -138,6 +138,68 @@ This is the workflow behind property-search tools (PropertyGuru-style sites) —
 
 ---
 
+## Pipeline use
+
+LINZ cadastral datasets support **true incremental sync** — when you re-sync after the weekly LINZ refresh, you receive only the rows added or changed since your last sync, not the full 3-million-row parcel layer. For a dataset like `nz_parcels`, this means your nightly or weekly sync job transfers a few MB of deltas instead of 1.6 GB.
+
+=== "Python"
+
+    ```python
+    from eolas_data import Client
+
+    client = Client("your_eolas_key")
+    LIBRARY = "/data/nz-warehouse"
+
+    # First sync: full 1.6 GB download, creates the snapshot file + manifest
+    result = client.sync("nz_parcels", library_dir=LIBRARY)
+    print(result.status)           # "snapshot_full"
+    print(result.bytes_downloaded) # ~1_650_000_000
+
+    # Next week: only the changed parcels
+    result = client.sync("nz_parcels", library_dir=LIBRARY)
+    print(result.status)   # "snapshot_delta"
+    print(result.rows_added)  # e.g. 2847
+
+    # Read as one logical table — PyArrow unions snapshot + deltas transparently
+    import pyarrow.parquet as pq
+    gdf = pq.ParquetDataset(f"{LIBRARY}/nz_parcels").read().to_pandas()
+    # Filter to current cadastral state
+    current = gdf[gdf["_eolas_is_current"] == True]
+    ```
+
+=== "R"
+
+    ```r
+    library(eolas)
+
+    result <- eolas_sync("nz_parcels", library_dir = "/data/nz-warehouse")
+    result$status     # "snapshot_full" first time, "snapshot_delta" after
+    result$rows_added # number of new/changed parcel records
+
+    library(arrow)
+    ds <- open_dataset("/data/nz-warehouse/nz_parcels")
+    current <- ds |> filter(_eolas_is_current == TRUE) |> collect()
+    ```
+
+=== "CLI"
+
+    ```bash
+    # First sync
+    eolas sync nz_parcels --library /data/nz-warehouse
+    # → snapshot_full (1.6 GB)
+
+    # Weekly cron
+    eolas sync nz_parcels --library /data/nz-warehouse
+    # → snapshot_delta +2847 rows (1.4 MB)
+
+    # Monthly compaction: roll 4 weeks of deltas into a fresh snapshot
+    eolas compact --dataset nz_parcels --library /data/nz-warehouse
+    ```
+
+See the [Sync guide](../sync-guide.md) for the full conceptual model, multi-dataset sync, and Airflow recipes.
+
+---
+
 ## Source-specific notes
 
 - **SCD2 for cadastral**: parcels, titles, and addresses use SCD2 replication — each refresh adds a new version of any changed rows and marks the old one as expired. The `_eolas_is_current`, `_eolas_valid_from`, and `_eolas_valid_to` columns let you reconstruct the state at any past timestamp. Most users want `WHERE _eolas_is_current = true` to get the current cadastral state.

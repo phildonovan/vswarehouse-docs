@@ -116,6 +116,40 @@ The two interest rates every analyst tracks:
 
 ---
 
+## Pipeline use
+
+RBNZ datasets are **full-refresh** on sync — each RBNZ release replaces the full table, so delta fetches are not applicable. Most RBNZ tables are small (exchange-rate series are a few hundred KB; the larger balance-sheet tables top out around 5 MB), so full re-downloads are fast.
+
+When you call `eolas sync` on an RBNZ dataset, it returns "unchanged" in weeks where RBNZ hasn't published a new release — zero bytes transferred. When a new release lands, the full table downloads and replaces the previous file.
+
+=== "Python"
+
+    ```python
+    result = client.sync("rbnz_b1_exchange_rates_daily", library_dir="/data/nz-warehouse")
+    print(result.status)  # "snapshot_full" (first run) or "unchanged"
+
+    import pyarrow.parquet as pq
+    df = pq.ParquetDataset("/data/nz-warehouse/rbnz_b1_exchange_rates_daily").read().to_pandas()
+    ```
+
+=== "R"
+
+    ```r
+    result <- eolas_sync("rbnz_b1_exchange_rates_daily", library_dir = "/data/nz-warehouse")
+    result$status  # "snapshot_full" or "unchanged"
+    ```
+
+=== "CLI"
+
+    ```bash
+    # Sync all RBNZ tables at once (after syncing them individually first)
+    eolas sync --library /data/nz-warehouse --all
+    ```
+
+See the [Sync guide](../sync-guide.md) for cron and Airflow recipes.
+
+---
+
 ## Source-specific notes
 
 - **Naming**: dataset names follow `rbnz_<rbnz_table_code>_<topic>` so they cross-reference cleanly to RBNZ's own [Statistics page](https://www.rbnz.govt.nz/statistics) — if you read a "B2" release on RBNZ's website, the eolas dataset is `rbnz_b2_*`.
