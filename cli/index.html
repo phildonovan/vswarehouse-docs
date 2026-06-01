@@ -1,0 +1,3443 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Python (eolas-data) and R (eolas) clients for the eolas.fyi statistical data API">
+      
+      
+      
+        <link rel="canonical" href="https://docs.eolas.fyi/cli/">
+      
+      
+        <link rel="prev" href="../r/reference/">
+      
+      
+        <link rel="next" href="../bulk-downloads/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Reference - eolas</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#command-line-interface" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="eolas" class="md-header__button md-logo" aria-label="eolas" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            eolas
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/phildonovan/eolas-data" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    eolas-data
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../quickstart/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sync-guide/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Sync guide
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../authentication/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Authentication
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../sources/" class="md-tabs__link">
+          
+  
+  
+  Data sources
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../python/" class="md-tabs__link">
+          
+  
+  
+  Python
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../r/" class="md-tabs__link">
+          
+  
+  
+  R
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  CLI
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../bulk-downloads/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Bulk downloads
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../examples/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Examples
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../troubleshooting/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Troubleshooting
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../blog/" class="md-tabs__link">
+          
+  
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="eolas" class="md-nav__button md-logo" aria-label="eolas" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    eolas
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/phildonovan/eolas-data" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    eolas-data
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sync-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sync guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data sources
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data sources
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/statsnz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stats NZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/oecd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OECD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/rbnz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RBNZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/linz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LINZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/treasury/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NZ Treasury
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/mbie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MBIE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/immigration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Immigration NZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/nzta/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Waka Kotahi / NZTA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/doc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DOC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/lris/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manaaki Whenua / LRIS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/acc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ACC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/msd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MSD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/education-counts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Education Counts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/police-moj/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NZ Police / MoJ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/worksafe/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WorkSafe NZ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/eeca/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    EECA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/charities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Charities Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/geonet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GeoNet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/pharmac/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PHARMAC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_21" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_21" id="__nav_5_21_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Councils
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_21_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_21">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Councils
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/councils/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/auckland-council/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auckland Council
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/auckland-transport/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Auckland Transport
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/wellington/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wellington Region
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/canterbury/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ECan / Canterbury
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/bay-of-plenty/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bay of Plenty
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/colab-waikato/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Co-Lab Waikato
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/otago/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Otago
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/hawkes-bay/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hawke's Bay
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/manawatu-whanganui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manawatū-Whanganui
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/northland/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Northland
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/southland/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Southland
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/taranaki/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Taranaki
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/top-of-south/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gisborne / Top of South
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/west-coast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    West Coast
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/napier-whanganui/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Napier + Whanganui
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Python
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    R
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    R
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r/reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    CLI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-human-or-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output: human or machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eolas-get-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas get &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-download-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas download &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-sync-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas sync &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-sync-library-dir-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas sync --library &lt;dir&gt; [&lt;name&gt;]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas compact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas datasets ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas auth ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas schedule ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-integrate-platform-enterprise-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas integrate &lt;platform&gt; (Enterprise plan)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="eolas integrate &lt;platform&gt; (Enterprise plan)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meltano-verification-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meltano verification recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experimental-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimental status
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exit codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bulk-downloads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bulk downloads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Troubleshooting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_12" >
+        
+          
+          <label class="md-nav__link" for="__nav_12" id="__nav_12_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_12_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_12">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Blog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Index
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/2026-05-27-geoparquet-rabbit-hole/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading our own GeoParquet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Authentication
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#output-human-or-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output: human or machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eolas-get-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas get &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-download-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas download &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-sync-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas sync &lt;name&gt;
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-sync-library-dir-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas sync --library &lt;dir&gt; [&lt;name&gt;]
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-compact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas compact
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas datasets ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas auth ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-schedule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas schedule ...
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eolas-integrate-platform-enterprise-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        eolas integrate &lt;platform&gt; (Enterprise plan)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="eolas integrate &lt;platform&gt; (Enterprise plan)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#meltano-verification-recipe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meltano verification recipe
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#experimental-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Experimental status
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exit codes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="command-line-interface">Command-line interface</h1>
+<p>The <code>eolas</code> command ships with the Python package as an optional install
+extra. Same install on Linux, macOS, and Windows.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>eolas-data<span class="o">[</span>cli<span class="o">]</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>eolas<span class="w"> </span>auth<span class="w"> </span>set-key
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>eolas<span class="w"> </span>--help
+</code></pre></div>
+<p>The CLI is a thin layer over the Python client — same auth, same retry
+logic, same error mapping. Use it from a terminal, a cron job, a shell
+script, or an AI agent.</p>
+<h2 id="quick-examples">Quick examples</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Browse</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>--source<span class="w"> </span><span class="s2">&quot;Stats NZ&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>--search<span class="w"> </span>cpi<span class="w"> </span>--json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.[].name&#39;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># Fetch (row-level, live API)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--start<span class="w"> </span><span class="m">2020</span>-01-01<span class="w"> </span>--format<span class="w"> </span>csv<span class="w"> </span>&gt;<span class="w"> </span>cpi.csv
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;.[].value&#39;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Bulk download (whole dataset as a single file)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w">                                    </span><span class="c1"># → nz_cpi.parquet in cwd</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>csv<span class="w"> </span>--out<span class="w"> </span>cpi.csv.gz<span class="w">     </span><span class="c1"># gzipped CSV</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>eolas<span class="w"> </span>download<span class="w"> </span>territorial_authority_2023<span class="w"> </span>--format<span class="w"> </span>geoparquet
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># Schedule (cron on POSIX, Task Scheduler on Windows)</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--daily<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.csv
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>list
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># Generate connector configs (Enterprise plan)</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>eolas<span class="w"> </span>integrate<span class="w"> </span>meltano<span class="w"> </span>--datasets<span class="w"> </span>nz_cpi,nz_gdp_growth<span class="w"> </span>--output<span class="w"> </span>./my-pipeline/
+</code></pre></div>
+<hr />
+<h2 id="authentication">Authentication</h2>
+<p><code>eolas</code> resolves your API key in this order:</p>
+<ol>
+<li><code>--api-key VALUE</code> flag on the command</li>
+<li><code>EOLAS_API_KEY</code> environment variable</li>
+<li>OS keyring (<code>pip install 'eolas-data[secure]'</code> required; service <code>"eolas"</code>, username <code>"api-key"</code>)</li>
+<li><code>~/.eolas/config.json</code> (written by <code>eolas auth set-key</code>, mode 0600)</li>
+</ol>
+<p>For workstations, the OS keyring is the most convenient: one-shot setup, encrypted at rest, no environment variable to manage. For CI and Docker, use the env var — the keyring backend is not available in headless environments.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># OS keyring (recommended for workstations)</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;eolas-data[secure]&#39;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>eolas<span class="w"> </span>auth<span class="w"> </span>save-key<span class="w">              </span><span class="c1"># interactive prompt</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>eolas<span class="w"> </span>auth<span class="w"> </span>save-key<span class="w"> </span>vs_mykey<span class="w">     </span><span class="c1"># non-interactive (e.g. from a script)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>eolas<span class="w"> </span>auth<span class="w"> </span>clear-key<span class="w">             </span><span class="c1"># remove from keyring</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Config file (plaintext fallback)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>eolas<span class="w"> </span>auth<span class="w"> </span>set-key<span class="w">               </span><span class="c1"># prompt for the key, write config</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>eolas<span class="w"> </span>auth<span class="w"> </span>clear<span class="w">                 </span><span class="c1"># delete the config file</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="c1"># Always available</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>eolas<span class="w"> </span>auth<span class="w"> </span>status<span class="w">                </span><span class="c1"># show which source is in use (env / keyring / config)</span>
+</code></pre></div>
+<hr />
+<h2 id="output-human-or-machine">Output: human or machine</h2>
+<p>The CLI auto-detects whether stdout is a terminal:</p>
+<table>
+<thead>
+<tr>
+<th>Context</th>
+<th>Default output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Interactive terminal</td>
+<td>Rich coloured tables</td>
+</tr>
+<tr>
+<td>Piped (<code>\| jq</code>, <code>&gt; file.csv</code>, etc.)</td>
+<td>NDJSON or CSV — whatever's most pipeable</td>
+</tr>
+</tbody>
+</table>
+<p>Force machine output explicitly with <code>--json</code> on any command that supports it.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Same command, different output</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w">                       </span><span class="c1"># → coloured table</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>--json<span class="w">                </span><span class="c1"># → newline-delimited JSON</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w">                </span><span class="c1"># → newline-delimited JSON (auto-detected)</span>
+</code></pre></div>
+<hr />
+<h2 id="commands">Commands</h2>
+<h3 id="eolas-get-name"><code>eolas get &lt;name&gt;</code></h3>
+<p>Fetch a dataset and write it to stdout or a file.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w">                                       </span><span class="c1"># CSV to stdout</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>json<span class="w">                         </span><span class="c1"># JSON to stdout</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--start<span class="w"> </span><span class="m">2020</span>-01-01<span class="w"> </span>--end<span class="w"> </span><span class="m">2024</span>-12-31<span class="w">   </span><span class="c1"># filtered</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_meshblock_2023<span class="w"> </span>--format<span class="w"> </span>parquet<span class="w"> </span>--out<span class="w"> </span>sa2.parquet<span class="w">  </span><span class="c1"># Parquet (must specify --out)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--limit<span class="w"> </span><span class="m">100</span><span class="w">                           </span><span class="c1"># cap rows</span>
+</code></pre></div>
+<p>Formats: <code>csv</code> (default), <code>json</code>, <code>parquet</code>.
+Parquet requires <code>--out FILE</code> (binary output isn't safe to stream to stdout).</p>
+<h3 id="eolas-download-name"><code>eolas download &lt;name&gt;</code></h3>
+<p>Download a complete dataset as a single file. Wraps the <code>/v1/bulk/{namespace}/{table}</code> endpoint — no row caps, no pagination.</p>
+<p>See <a href="../bulk-downloads/">Bulk downloads</a> for tiers, caching, licence rules, and redistribution guidance.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w">                                    </span><span class="c1"># Parquet, written to ./nz_cpi.parquet</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>csv<span class="w">                       </span><span class="c1"># gzipped CSV → ./nz_cpi.csv.gz</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>parquet<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.parquet
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>eolas<span class="w"> </span>download<span class="w"> </span>territorial_authority_2023<span class="w"> </span>--format<span class="w"> </span>geoparquet
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w"> </span>--freshness<span class="w"> </span>monthly<span class="w">                </span><span class="c1"># pin to latest monthly snapshot</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>eolas<span class="w"> </span>download<span class="w"> </span>nz_cpi<span class="w"> </span>--freshness<span class="w"> </span>current<span class="w">                </span><span class="c1"># Pro plan — current Iceberg snapshot</span>
+</code></pre></div>
+<p><strong>Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Values</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--format</code>, <code>-f</code></td>
+<td><code>parquet</code>, <code>csv</code>, <code>geoparquet</code></td>
+<td><code>parquet</code></td>
+<td>Output format. <code>csv</code> writes a <code>.csv.gz</code> file. GeoParquet requires a geospatial dataset.</td>
+</tr>
+<tr>
+<td><code>--freshness</code></td>
+<td><code>auto</code>, <code>monthly</code>, <code>current</code></td>
+<td><code>auto</code></td>
+<td><code>auto</code> — server picks based on plan (Free→monthly, Pro→current).</td>
+</tr>
+<tr>
+<td><code>--out</code>, <code>-o</code></td>
+<td>PATH</td>
+<td><code>&lt;name&gt;.&lt;ext&gt;</code> in cwd</td>
+<td>Destination file path.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td>KEY</td>
+<td>resolved from env / config</td>
+<td>Override API key.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>Success — file written</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>Auth error (invalid key, 402 upgrade required, 403 licence restricted)</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>API error (503 snapshot not yet available, 5xx)</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>Dataset not found</td>
+</tr>
+</tbody>
+</table>
+<p>On success (interactive mode) the command prints the filename and file size. When stdout is piped, it emits a single JSON line: <code>{"path": "...", "bytes": ..., "format": "...", "freshness": "..."}</code>.</p>
+<hr />
+<h3 id="eolas-sync-name"><code>eolas sync &lt;name&gt;</code></h3>
+<p>Incrementally sync a bulk dataset — only re-downloads when the server's snapshot changes.</p>
+<p>On each run, a lightweight HEAD request checks the <code>X-Snapshot-Version</code> header. If the local file is already current (snapshot id matches the sidecar), no data is transferred. The file is replaced <strong>atomically</strong> when an update is available. A sidecar file <code>&lt;out&gt;.eolas-meta.json</code> records the snapshot id for the next check.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Single-shot sync (no --watch)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_cpi<span class="w">                                     </span><span class="c1"># → ./nz_cpi.parquet</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>csv<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.csv.gz
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Watch mode: poll every hour, print one line per iteration, exit with Ctrl-C</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_cpi<span class="w"> </span>--watch<span class="w"> </span>1h
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_cpi<span class="w"> </span>--watch<span class="w"> </span>hourly<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.parquet
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_cpi<span class="w"> </span>--watch<span class="w"> </span>30m<span class="w">    </span>--freshness<span class="w"> </span>current
+</code></pre></div>
+<p><strong>Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Values</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--format</code>, <code>-f</code></td>
+<td><code>parquet</code>, <code>csv</code>, <code>geoparquet</code></td>
+<td><code>parquet</code></td>
+<td>Output format.</td>
+</tr>
+<tr>
+<td><code>--freshness</code></td>
+<td><code>auto</code>, <code>monthly</code>, <code>current</code></td>
+<td><code>auto</code></td>
+<td>Freshness level.</td>
+</tr>
+<tr>
+<td><code>--out</code>, <code>-o</code></td>
+<td>PATH</td>
+<td><code>&lt;name&gt;.&lt;ext&gt;</code> in cwd</td>
+<td>Destination file path.</td>
+</tr>
+<tr>
+<td><code>--watch</code></td>
+<td>duration</td>
+<td>(off)</td>
+<td>Foreground poll loop. Duration examples: <code>60</code> / <code>30s</code> / <code>5m</code> / <code>1h</code> / <code>1d</code> / <code>hourly</code> / <code>daily</code> / <code>weekly</code>.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td>KEY</td>
+<td>resolved from env / config</td>
+<td>Override API key.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Watch-mode output</strong> (one line per iteration):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[14:00:00 NZST] unchanged (snapshot 5503437…)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[15:00:00 NZST] updated to snapshot 7041234… (1.2 MB)
+</code></pre></div>
+<p><strong>Exit codes:</strong> Same as <code>eolas download</code> (<code>0</code> success, <code>2</code> auth/plan, <code>5</code> API error, <code>4</code> not found, <code>64</code> bad usage).</p>
+<hr />
+<h3 id="eolas-sync-library-dir-name"><code>eolas sync --library &lt;dir&gt; [&lt;name&gt;]</code></h3>
+<p>Pipeline-mode sync: maintain a local dataset library where each dataset is a directory of Parquet files, updated incrementally. This is distinct from the single-file <code>eolas sync &lt;name&gt;</code> (no <code>--library</code>) which syncs a single bulk file.</p>
+<p>See the <a href="../sync-guide/">Sync guide</a> for the full walkthrough, cron recipes, Airflow integration, and the comparison vs Fivetran/Stitch.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># First sync — full download; creates /data/nz-warehouse/nz_parcels/ + manifest</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_parcels<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># Re-sync — only delta rows (or &quot;unchanged&quot; if snapshot is current)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>eolas<span class="w"> </span>sync<span class="w"> </span>nz_parcels<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="c1"># Multiple named datasets</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>eolas<span class="w"> </span>sync<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse<span class="w"> </span>--datasets<span class="w"> </span>nz_parcels<span class="w"> </span>nz_addresses<span class="w"> </span>nz_property_titles
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="c1"># Everything previously synced into this library</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>eolas<span class="w"> </span>sync<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse<span class="w"> </span>--all
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="c1"># Read the result with any Parquet tool</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>duckdb<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;SELECT count(*) FROM read_parquet(&#39;/data/nz-warehouse/nz_parcels/*.parquet&#39;)&quot;</span>
+</code></pre></div>
+<p><strong>Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Values</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--library</code>, <code>-l</code></td>
+<td>PATH</td>
+<td>(required)</td>
+<td>Root library directory</td>
+</tr>
+<tr>
+<td><code>--datasets</code></td>
+<td>NAME [NAME…]</td>
+<td>(none)</td>
+<td>Explicit list of dataset names to sync</td>
+</tr>
+<tr>
+<td><code>--all</code></td>
+<td>flag</td>
+<td>off</td>
+<td>Sync all datasets with existing manifests in the library</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td>KEY</td>
+<td>resolved from env / config</td>
+<td>Override API key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes</strong></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>All syncs succeeded (including "unchanged")</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>Auth error or plan restriction</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>One or more datasets not found</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>API error</td>
+</tr>
+<tr>
+<td><code>64</code></td>
+<td>Bad usage (missing required flag)</td>
+</tr>
+</tbody>
+</table>
+<p>On success, each dataset prints one line: <code>nz_parcels: unchanged (snapshot 5503437…)</code> or <code>nz_parcels: delta +2847 rows (1.4 MB)</code>.</p>
+<hr />
+<h3 id="eolas-compact"><code>eolas compact</code></h3>
+<p>Merge all snapshot and delta files in a dataset directory into a single new snapshot file, then remove the old files. Run periodically to keep each dataset directory clean.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Single dataset directory</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>eolas<span class="w"> </span>compact<span class="w"> </span>--dataset<span class="w"> </span>nz_parcels<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Entire library — compacts every dataset that has delta files</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>eolas<span class="w"> </span>compact<span class="w"> </span>--library<span class="w"> </span>/data/nz-warehouse
+</code></pre></div>
+<p><strong>Options</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Values</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--library</code>, <code>-l</code></td>
+<td>PATH</td>
+<td>(required)</td>
+<td>Root library directory</td>
+</tr>
+<tr>
+<td><code>--dataset</code></td>
+<td>NAME</td>
+<td>(none)</td>
+<td>Compact one specific dataset. Omit to compact all datasets in the library with delta files.</td>
+</tr>
+<tr>
+<td><code>--api-key</code></td>
+<td>KEY</td>
+<td>resolved from env / config</td>
+<td>Override API key</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes:</strong> <code>0</code> success, <code>4</code> dataset not found, <code>5</code> I/O error.</p>
+<p>On success, prints: <code>nz_parcels: compacted 18 files → snapshot-2026-06-01.parquet (1.6 GB, saved 42 MB)</code>.</p>
+<hr />
+<h3 id="eolas-datasets"><code>eolas datasets ...</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w">                                    </span><span class="c1"># everything</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>--source<span class="w"> </span><span class="s2">&quot;Stats NZ&quot;</span><span class="w">                </span><span class="c1"># filter by source</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>list<span class="w"> </span>--search<span class="w"> </span>cpi<span class="w">                       </span><span class="c1"># substring on name/title</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>info<span class="w"> </span>nz_cpi<span class="w">                             </span><span class="c1"># full metadata</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>eolas<span class="w"> </span>datasets<span class="w"> </span>preview<span class="w"> </span>nz_cpi<span class="w"> </span>--limit<span class="w"> </span><span class="m">5</span><span class="w">                </span><span class="c1"># first N rows</span>
+</code></pre></div>
+<h3 id="eolas-auth"><code>eolas auth ...</code></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># OS keyring — one-shot workstation setup (pip install &#39;eolas-data[secure]&#39;)</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>eolas<span class="w"> </span>auth<span class="w"> </span>save-key<span class="w">              </span><span class="c1"># interactive prompt; saves to OS keyring</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>eolas<span class="w"> </span>auth<span class="w"> </span>save-key<span class="w"> </span>vs_mykey<span class="w">     </span><span class="c1"># non-interactive (e.g. from a setup script)</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>eolas<span class="w"> </span>auth<span class="w"> </span>clear-key<span class="w">             </span><span class="c1"># remove key from OS keyring</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1"># Config file — plaintext fallback (no extra install needed)</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>eolas<span class="w"> </span>auth<span class="w"> </span>set-key<span class="w">               </span><span class="c1"># interactive prompt; writes ~/.eolas/config.json</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>eolas<span class="w"> </span>auth<span class="w"> </span>clear<span class="w">                 </span><span class="c1"># remove config file</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="c1"># Status — works regardless of which source is active</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>eolas<span class="w"> </span>auth<span class="w"> </span>status<span class="w">                </span><span class="c1"># masked key + which source is supplying it</span>
+</code></pre></div>
+<p><code>eolas auth status</code> checks all sources in precedence order and reports the first one it finds — useful for debugging auth issues in any environment.</p>
+<h3 id="eolas-schedule"><code>eolas schedule ...</code></h3>
+<p>Recurring fetches via the OS-native scheduler. <strong>cron</strong> on Linux/macOS,
+<strong>Task Scheduler</strong> on Windows — same commands, same behaviour.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Daily at 06:00 local time (the default)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--daily<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.csv
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Other shortcuts</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--hourly<span class="w">  </span>--out<span class="w"> </span>~/data/cpi.csv
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--weekly<span class="w">  </span>--out<span class="w"> </span>~/data/cpi.csv
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--monthly<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.csv
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Custom cron expression (POSIX only)</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>rbnz_b1_exchange_rates_monthly<span class="w"> </span>--cron<span class="w"> </span><span class="s2">&quot;0 */6 * * *&quot;</span><span class="w"> </span>--out<span class="w"> </span>~/data/fx.csv
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># Preview without installing</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span>nz_cpi<span class="w"> </span>--daily<span class="w"> </span>--out<span class="w"> </span>~/data/cpi.csv<span class="w"> </span>--dry-run
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>list
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>eolas<span class="w"> </span>schedule<span class="w"> </span>remove<span class="w"> </span>nz_cpi
+</code></pre></div>
+<p><code>--out FILE</code> is required — cron jobs run with no terminal, so stdout has
+to go somewhere on disk.</p>
+<p>On POSIX, managed entries are tagged with <code># eolas-schedule: &lt;name&gt;</code>
+sentinels, so <code>eolas schedule list/remove</code> only ever touch lines that
+belong to eolas. Your other cron jobs aren't affected. On Windows the
+equivalent is the <code>eolas-&lt;name&gt;</code> task name prefix.</p>
+<h3 id="eolas-integrate-platform-enterprise-plan"><code>eolas integrate &lt;platform&gt;</code> (Enterprise plan)</h3>
+<p>Generate ready-to-deploy connector configs for popular data-pipeline tools.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>eolas<span class="w"> </span>integrate<span class="w"> </span>meltano<span class="w">             </span>--datasets<span class="w"> </span>nz_cpi,nz_gdp_growth<span class="w"> </span>--output<span class="w"> </span>./tap-eolas/
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>eolas<span class="w"> </span>integrate<span class="w"> </span>fivetran<span class="w">            </span>--datasets<span class="w"> </span>nz_cpi
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>eolas<span class="w"> </span>integrate<span class="w"> </span>azure-data-factory<span class="w">  </span>--datasets<span class="w"> </span>nz_cpi,nz_gdp_growth
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>What you get</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Meltano</td>
+<td><code>meltano.yml</code> (uses <code>tap-rest-api-msdk</code>) + README + <code>.env.example</code> — <code>meltano install &amp;&amp; meltano run tap-eolas target-jsonl</code> and you're loading</td>
+<td><strong>Verified end-to-end</strong> — see recipe below</td>
+</tr>
+<tr>
+<td>Fivetran</td>
+<td>Connector Builder YAML for paste-into-dashboard import + setup README</td>
+<td><strong>Experimental</strong> — output is structure-verified but hasn't been tested end-to-end against a real Fivetran account</td>
+</tr>
+<tr>
+<td>Azure Data Factory</td>
+<td>Linked-service + per-dataset REST datasets + copy pipeline JSON — usable via <code>az datafactory</code> CLI or ADF Studio paste</td>
+<td><strong>Experimental</strong> — output is structure-verified but hasn't been tested end-to-end against a real Azure subscription</td>
+</tr>
+</tbody>
+</table>
+<p>Output directory defaults to <code>./eolas-&lt;platform&gt;/</code>. Existing files are
+preserved unless you pass <code>--force</code>.</p>
+<p>This is an Enterprise-plan feature. Non-Enterprise keys see a clear
+upgrade pointer with the <a href="https://eolas.fyi/#pricing">pricing URL</a>. The
+gating lives server-side so the capability is bypass-proof.</p>
+<h4 id="meltano-verification-recipe">Meltano verification recipe</h4>
+<p>Roughly five minutes, end-to-end:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>eolas<span class="w"> </span>integrate<span class="w"> </span>meltano<span class="w"> </span>--datasets<span class="w"> </span>nz_cpi<span class="w"> </span>--output<span class="w"> </span>/tmp/eolas-meltano-test
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nb">cd</span><span class="w"> </span>/tmp/eolas-meltano-test
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">EOLAS_API_KEY</span><span class="o">=</span>your_enterprise_key
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>meltano<span class="w"> </span>install
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>meltano<span class="w"> </span>run<span class="w"> </span>tap-eolas<span class="w"> </span>target-jsonl
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>ls<span class="w"> </span>output/<span class="w">             </span><span class="c1"># → nz_cpi.jsonl with the CPI series in it</span>
+</code></pre></div>
+<p>If records land in <code>output/nz_cpi.jsonl</code>, the generated <code>meltano.yml</code> is provably
+correct — Meltano installed the tap, fetched data through the eolas API, and
+wrote it to disk. This is the path used to mark Meltano "verified".</p>
+<h4 id="experimental-status">Experimental status</h4>
+<p>"Experimental" doesn't mean <em>broken</em>; it means the output passes a thorough
+set of structural checks (parses as valid YAML / JSON, declares all the
+fields the platform's documented spec requires, internal references between
+resources resolve correctly) but <strong>the generated config has not actually
+been imported into the target platform and run end-to-end</strong>.</p>
+<p>If you import the experimental output into Fivetran or ADF and it fails with
+a specific error, <a href="https://github.com/phildonovan/eolas-data/issues">open an issue on eolas-data</a>
+with the error message. Usually it's a renamed field or a stricter type than
+the generator assumed; fixes ship within hours.</p>
+<h3 id="other-commands">Other commands</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>eolas<span class="w"> </span>health<span class="w">    </span><span class="c1"># ping the API; useful smoke check in CI</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>eolas<span class="w"> </span>version<span class="w">   </span><span class="c1"># print installed eolas-data version</span>
+</code></pre></div>
+<hr />
+<h2 id="exit-codes">Exit codes</h2>
+<p>For shell scripts and AI agents that branch on outcome:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>Success</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>Generic error</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td>Authentication (invalid key, Enterprise plan required, etc.)</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>Rate limit hit</td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>Dataset / resource not found</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>Other API error (5xx, etc.)</td>
+</tr>
+<tr>
+<td><code>64</code></td>
+<td>Bad command-line usage (mirrors <code>sysexits.h</code>)</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">if</span><span class="w"> </span>eolas<span class="w"> </span>health<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span>eolas<span class="w"> </span>get<span class="w"> </span>nz_cpi<span class="w"> </span>--format<span class="w"> </span>csv<span class="w"> </span>&gt;<span class="w"> </span>cpi.csv
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="k">fi</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="k">case</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span><span class="k">in</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">  </span><span class="m">2</span><span class="o">)</span><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;auth problem — run eolas auth set-key&quot;</span><span class="w"> </span><span class="p">;;</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span><span class="m">3</span><span class="o">)</span><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;rate limited — wait and retry&quot;</span><span class="w"> </span><span class="p">;;</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">  </span><span class="m">4</span><span class="o">)</span><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;dataset not found&quot;</span><span class="w"> </span><span class="p">;;</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="k">esac</span>
+</code></pre></div>
+<hr />
+<h2 id="tips">Tips</h2>
+<ul>
+<li><strong>Piping</strong>: every command that produces records auto-switches to NDJSON
+  when stdout is piped. Combine with <code>jq</code>, <code>csvkit</code>, <code>mlr</code>, or anything else.</li>
+<li><strong>CI usage</strong>: set <code>EOLAS_API_KEY</code> as a CI secret; the env var takes
+  precedence over any on-disk config.</li>
+<li><strong>Agent usage</strong>: <code>--help</code> is structured enough that an LLM can discover
+  the commands without reading external docs. Stable exit codes mean
+  agents can branch on outcome programmatically.</li>
+<li><strong>Custom output dir for integrations</strong>: pass <code>--output DIR</code>. If <code>DIR</code>
+  doesn't exist it's created.</li>
+</ul>
+<hr />
+<h2 id="source">Source</h2>
+<p>The CLI lives in <a href="https://github.com/phildonovan/eolas-data">eolas-data</a> —
+<code>eolas_data/cli.py</code> and <code>eolas_data/schedule.py</code>. PRs welcome.</p>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="True" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M5 9v12H1V9zm4 12a2 2 0 0 1-2-2V9c0-.55.22-1.05.59-1.41L14.17 1l1.06 1.06c.27.27.44.64.44 1.05l-.03.32L14.69 8H21a2 2 0 0 1 2 2v2c0 .26-.05.5-.14.73l-3.02 7.05C19.54 20.5 18.83 21 18 21zm0-2h9.03L21 12v-2h-8.79l1.13-5.32L9 9.03z"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="False" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 15V3h4v12zM15 3a2 2 0 0 1 2 2v10c0 .55-.22 1.05-.59 1.41L9.83 23l-1.06-1.06c-.27-.27-.44-.64-.44-1.06l.03-.31.95-4.57H3a2 2 0 0 1-2-2v-2c0-.26.05-.5.14-.73l3.02-7.05C4.46 3.5 5.17 3 6 3zm0 2H5.97L3 12v2h8.78l-1.13 5.32L15 14.97z"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for the feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks — we'll work on improving this.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/phildonovan/eolas-data" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/eolas-data/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

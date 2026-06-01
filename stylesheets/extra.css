@@ -1,0 +1,28 @@
+/* Tighten up code blocks */
+.highlight pre {
+  border-radius: 8px;
+}
+
+/* Hero section on home page */
+.hero {
+  padding: 3rem 0 2rem;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.hero p {
+  font-size: 1.1rem;
+  color: var(--md-default-fg-color--light);
+  max-width: 540px;
+  margin: 0 auto 2rem;
+}
+.badge-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
